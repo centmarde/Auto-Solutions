@@ -1,5 +1,5 @@
-!<template>
-    <div>
+<template>
+    <div id="nav" class="container-fluid">
         <header>
       <section class="logo">
         <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
@@ -38,6 +38,7 @@ const toggleMenu = () => {
 </script>
 
 <style lang="scss" scoped>
+
 .logo {
   display: flex;
   align-items: center;
