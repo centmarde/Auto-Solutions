@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 import '../src/scss/styles.scss'
 import * as bootstrap from 'bootstrap'
+import router from './router/router'
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -10,4 +11,4 @@ const supabase = createClient('https://xgjgtijbrkcwwsliqubk.supabase.co','eyJhbG
 
 
 
-createApp(App).mount('#app')
+createApp(App).use(router).mount('#app')
