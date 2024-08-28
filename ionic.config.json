@@ -1,0 +1,7 @@
+{
+  "name": "auto-solutions",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
