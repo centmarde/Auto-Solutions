@@ -17,10 +17,14 @@
     "@capacitor/haptics": "6.0.1",
     "@capacitor/keyboard": "6.0.2",
     "@capacitor/status-bar": "6.0.1",
+    "@popperjs/core": "^2.11.8",
+    "@supabase/supabase-js": "^2.45.2",
+    "bootstrap": "^5.3.3",
     "vue": "^3.4.37"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
+    "sass": "^1.77.8",
     "vite": "^5.4.1"
   }
 }
