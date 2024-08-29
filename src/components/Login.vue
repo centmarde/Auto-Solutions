@@ -30,25 +30,7 @@
   
   <script setup>
   import { ref } from 'vue';
-  import { useAuthStore } from '../store/auth';
-  
-  const authStore = useAuthStore();
-  
-  const email = ref('');
-  const password = ref('');
-  const passwordType = ref('password');
-  
-  const login = async () => {
-    try {
-      await authStore.handleLogin({ email: email.value, password: password.value });
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
-  };
-  
-  const togglePassword = () => {
-    passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
-  };
+ 
   </script>
   
   <style scoped>
