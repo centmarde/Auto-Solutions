@@ -1,33 +1,50 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Hero from '../components/Hero.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'hero',
-    component: Hero
+    component: () => import('../components/Hero.vue'),
+    beforeEnter: (to, from) => {
+      // Redirect authenticated users to the dashboard
+      if (sessionStorage.getItem('token') != null) {
+        return '/home'; // Redirect to a default page for authenticated users
+      }
+    },
   },
-  // Uncomment and add routes if needed
-  // {
-  //   path: '/background',
-  //   name: 'background',
-  //   component: BackgroundPage
-  // },
-  // {
-  //   path: '/portfolio',
-  //   name: 'portfolio',
-  //   component: PortfolioPage
-  // },
-  // {
-  //   path: '/contact',
-  //   name: 'contact',
-  //   component: ContactPage
-  // },
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   name: 'notFound',
-  //   component: NotFoundPage
-  // },
+  {
+    path: '/login',
+    component: () => import('../components/Login.vue'),
+    beforeEnter: (to, from) => {
+      // Redirect authenticated users to the dashboard
+      if (sessionStorage.getItem('token') != null) {
+        return '/home'; // Redirect to a default page for authenticated users
+      }
+    },
+  },
+  {
+    path: '/register',
+    component: () => import('../components/Register.vue'),
+    beforeEnter: (to, from) => {
+      // Redirect authenticated users to the dashboard
+      if (sessionStorage.getItem('token') != null) {
+        return '/home'; // Redirect to a default page for authenticated users
+      }
+    },
+  },
+  {
+    path: '/hero',
+    component: () => import('../components/Hero.vue'),
+    beforeEnter: (to, from) => {
+      // Redirect unauthenticated users to the login page
+      if (sessionStorage.getItem('token') == null) {
+        return '/login'; // Redirect to the login page if not authenticated
+      }
+    },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('../components/Notfoundpage.vue'),
+  },
 ];
 
 const router = createRouter({

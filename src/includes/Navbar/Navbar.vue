@@ -1,7 +1,7 @@
 <template>
     <div id="nav" class="container-fluid">
-        <header>
-      <section class="logo">
+        <header class="row">
+          <div class="col">  <section class="logo">
         <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
         <h3>Gidor's Auto Solutions</h3>
       </section>
@@ -15,8 +15,9 @@
         <NavLink href="#home" @click="closeMenu">Home</NavLink>
         <NavLink href="#menu" @click="closeMenu">Menu</NavLink>
         <NavLink href="#stack" @click="closeMenu">About Us</NavLink>
-        <NavLink href="#graphics" @click="closeMenu">Log-in</NavLink>
-      </section>
+        <router-link to="/login" @click="closeMenu">Log-in</router-link>
+      </section></div>
+    
 
      
     </header>
