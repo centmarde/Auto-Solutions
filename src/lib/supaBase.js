@@ -1,5 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
+async function doLogout() {
+  // Supabase Logout
+  let { error } = await supabase.auth.signOut();
 
+  if (error == null) {
+    alert("Logout Successfully!");
+
+    // Clear local Storage
+    localStorage.clear();
+
+    // Redirect to login page
+    window.location.pathname = "/";
+  } else {
+    alert("Logout Failed!", 15);
+  }
+}
+
+export { doLogout };
 // Create and export Supabase client
 export const supabase = createClient(
   'https://xgjgtijbrkcwwsliqubk.supabase.co',

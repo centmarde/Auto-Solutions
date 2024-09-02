@@ -8,7 +8,7 @@
 
       <!-- Form section on the right side -->
       <div class="col-lg-6 col-md-8 col-sm-12">
-        <form @submit.prevent="submitForm" class="wrap-form text-center p-3 m-3">
+        <form @submit.prevent="submitForm" ref="form_register" class="wrap-form text-center p-3 m-3">
           <h1>Sign-up</h1>
           <hr />
           <h4 class="text-start mt-2 mb-3">Personal Details</h4>
@@ -236,10 +236,12 @@ export default {
             firstname: this.firstname,
             middlename: this.middlename,
             lastname: this.lastname,
+            username: this.username,
             email: this.email,
             gender: this.gender,
             birthdate: this.birthdate,
             auth_id: user_id, 
+            address: `${this.selectedBarangayName}, ${this.selectedCityName}, ${this.selectedProvinceName}, ${this.selectedRegionName}`,
           };
 
           try {
