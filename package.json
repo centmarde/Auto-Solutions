@@ -20,7 +20,10 @@
     "@popperjs/core": "^2.11.8",
     "@supabase/supabase-js": "^2.45.2",
     "axios": "^1.7.5",
+    "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "vue": "^3.4.37",
     "vue-router": "^4.4.3"
   },
