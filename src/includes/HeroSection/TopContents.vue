@@ -8,7 +8,7 @@
             <img class="car1 img-fluid" src="@/assets/images/car1.png" alt="" />
           </div>
           <div class="col-md-2">
-            <h1 class="display-4 text-dark">RIDE LIKE A CHAMPION</h1>
+            <h1 class="display-4">RIDE LIKE A CHAMPION</h1>
           </div>
          
         </div>
@@ -110,12 +110,12 @@ main{
 }
 
 
-.header2 h1 {
+/* .header2 h1 {
   font-size: 3rem;
   font-style: italic;
   color: white;
   margin-top: 150px;
-}
+} */
 
 .engine {
   max-width: 200px;
