@@ -1,85 +1,121 @@
 <template>
-    <div id="nav" class="container-fluid">
-        <header class="row">
-          <div class="col">  <section class="logo">
-        <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
-        <h3>Gidor's Auto Solutions</h3>
-      </section>
-      <div class="hamburger mx-2" @click="toggleMenu">
-        <div class="bar" :class="{ open: isMenuVisible }"></div>
-        <div class="bar" :class="{ open: isMenuVisible }"></div>
-        <div class="bar" :class="{ open: isMenuVisible }"></div>
+  <header class="navbar navbar-expand-lg fixed-top" :class="{'navbar-dark': theme === 'dark', 'navbar-light': theme === 'light'}" :style="{ backgroundColor: theme === 'dark' ? 'rgba(82, 52, 52, 0.5)' : 'rgba(255, 255, 255, 0.5)' }">
+    <div class="container-fluid">
+      <!-- Logo and Title Section -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img
+          src="@/assets/images/logo.jpeg"
+          alt="logo"
+          class="logopic"
+          height="50"
+        />
+        <h3 id="gidor" class="ms-2 mb-0">Gidor's Auto Solutions</h3>
+      </a>
+
+      <!-- Hamburger Menu Button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        @click="toggleMenu"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Links -->
+      <div
+        class="collapse navbar-collapse"
+        :class="{ show: isMenuVisible }"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a href="#home" class="nav-link" @click="closeMenu">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#menu" class="nav-link" @click="closeMenu">Menu</a>
+          </li>
+          <li class="nav-item">
+            <a href="#stack" class="nav-link" @click="closeMenu">About Us</a>
+          </li>
+          <li class="nav-item me-5">
+            <router-link to="/login" class="nav-link" @click="closeMenu">Log-in</router-link>
+          </li>
+          <!-- Theme Toggle Switch -->
+          <li class="nav-item d-flex align-items-center">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="themeSwitch" :checked="theme === 'light'" @change="toggleTheme">
+              <label class="form-check-label" for="themeSwitch">
+                <i :class="theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon'"></i>
+              </label>
+            </div>
+          </li>
+        </ul>
       </div>
-
-      <section  class="nav-links buttons" :class="{ show: isMenuVisible }">
-        <NavLink href="#home" @click="closeMenu">Home</NavLink>
-        <NavLink href="#menu" @click="closeMenu">Menu</NavLink>
-        <NavLink href="#stack" @click="closeMenu">About Us</NavLink>
-        <router-link to="/login" @click="closeMenu">Log-in</router-link>
-      </section></div>
-    
-
-     
-    </header>
     </div>
+  </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import NavLink from './Navlink.vue';
+import { ref, onMounted } from 'vue';
 
 const isMenuVisible = ref(false);
+const theme = ref(localStorage.getItem('theme') || 'dark'); // Load saved theme or default to dark
 
 const closeMenu = () => {
   isMenuVisible.value = false;
 };
+
 const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
 };
+
+const toggleTheme = () => {
+  theme.value = theme.value === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-bs-theme', theme.value);
+  localStorage.setItem('theme', theme.value); // Save theme in local storage
+};
+
+onMounted(() => {
+  document.documentElement.setAttribute('data-bs-theme', theme.value); // Apply saved theme on mount
+});
 </script>
 
-<style lang="scss" scoped>
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-left: 120px;
-}
-
+<style scoped>
 .logopic {
   border-radius: 30px;
-  height: 50px;
+  max-width: 100px; /* Ensures logo doesn't grow too large */
 }
 
-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background-color: rgba(82, 52, 52, 0.5);
-  margin: -10px;
-  margin-top: -20px;
-  padding: 10px;
-  align-items: center;
-  color: white;
-  position: fixed;
-  width: 100%;
+#gidor {
+  font-size: 1.5rem; /* Default font size */
 }
 
-.buttons {
-  display: flex;
-  gap: 50px;
-  margin-left: 200px;
+@media (max-width: 992px) { /* Large tablets and small desktops */
+  #gidor {
+    font-size: 1.25rem;
+  }
 }
 
-header a {
-  text-decoration: none;
-  color: white;
+@media (max-width: 768px) { /* Tablets */
+  .logopic {
+    height: 40px; /* Smaller logo for smaller screens */
+  }
+
+  #gidor {
+    font-size: 1rem; /* Smaller title for smaller screens */
+  }
 }
 
-header a:hover {
-  padding: 10px;
-  background-color: rgba(141, 40, 40, 0.25);
-  border-radius: 20px;
-}
+@media (max-width: 280px) { /* Mobile devices */
+  .logopic {
+    height: 30px; /* Even smaller logo for mobile */
+  }
 
+  #gidor {
+    font-size: 0.6rem; /* Adjust title size for mobile */
+  }
+}
 </style>

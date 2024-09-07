@@ -1,15 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Hero from '../components/Hero.vue';
-import Home from '../components/dist/Home.vue';
 import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
-import NotFound from '../components/Notfoundpage.vue'; // Optional for handling unknown routes
+import NotFound from '../components/Notfoundpage.vue';
+
+//login contents
+// import Home from '../components/dist/Home.vue';
+import UserLanding from '../components/includes/UserLanding.vue'
+import CarRepair from '../includes/HomeSection/CarRepair.vue'
+import CarParts from '../includes/HomeSection/CarParts.vue'
+import CarRental from '../includes/HomeSection/CarRental.vue';
 
 const routes = [
   { path: '/', component: Hero },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/home', component: Home, meta: { requiresAuth: true } },
+  { path: '/UserLanding', component: UserLanding, meta: { requiresAuth: true } },
+  { path: '/CarRepair', component: CarRepair, meta: { requiresAuth: true } },
+  { path: '/CarParts', component: CarParts, meta: { requiresAuth: true } },
+  { path: '/CarRental', component: CarRental, meta: { requiresAuth: true } },
+
+  // { path: '/home', component: Home, meta: { requiresAuth: true } },
   /* { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/userProfile', component: UserProfile, meta: { requiresAuth: true } },
   { path: '/help', component: Help, meta: { requiresAuth: true } },
@@ -31,7 +42,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/', '/login', '/register'];
 
   // Pages that require authentication
-  const protectedPages = ['/home', '/dashboard', '/userProfile', '/help', '/accept', '/sets'];
+  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/sets'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
@@ -40,7 +51,7 @@ router.beforeEach((to, from, next) => {
 
   // Redirect to home if already logged in and trying to access public pages
   if (publicPages.includes(to.path) && isLoggedIn) {
-    return next('/home');
+    return next('/UserLanding');
   }
 
   // Example for role-based access (uncomment if needed)
