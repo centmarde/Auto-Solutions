@@ -3,13 +3,15 @@ import Hero from '../components/Hero.vue';
 import Home from '../components/dist/Home.vue';
 import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
-import NotFound from '../components/Notfoundpage.vue'; // Optional for handling unknown routes
+import Carowned from '../components/dist/CarOwned.vue';
+import NotFound from '../components/Notfoundpage.vue'; 
 
 const routes = [
   { path: '/', component: Hero },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/home', component: Home, meta: { requiresAuth: true } },
+  { path: '/Carowned', component: Carowned, meta: { requiresAuth: true } },
   /* { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/userProfile', component: UserProfile, meta: { requiresAuth: true } },
   { path: '/help', component: Help, meta: { requiresAuth: true } },
