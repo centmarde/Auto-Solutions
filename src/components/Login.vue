@@ -1,6 +1,7 @@
 <template>
   <div>
-    <form id="login_form" @submit.prevent="login" class="container wrap-form text-center mt-5">
+    <br><br>
+    <form id="login_form" @submit.prevent="login" class="container wrap-form text-center">
       <h1 class="login">Auto Solutions</h1>
       <h2 class="text-center">Login</h2>
       <div class="input-box">

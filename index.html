@@ -9,29 +9,12 @@
   </head>
   <body>
     <div class="container mt-3">
-      <button id="theme-toggle" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;position: fixed; margin-top: 80px; z-index: 9999;">
-        Switch to Light Mode
-      </button>
+    
     </div>
 
     <div id="app"></div>
 
     <script type="module" src="/src/main.js"></script>
-    <script>
-      const themeToggleBtn = document.getElementById('theme-toggle');
-      const htmlElement = document.documentElement;
-
-      themeToggleBtn.addEventListener('click', () => {
-        const currentTheme = htmlElement.getAttribute('data-bs-theme');
-
-        if (currentTheme === 'dark') {
-          htmlElement.setAttribute('data-bs-theme', 'light');
-          themeToggleBtn.textContent = 'Switch to Dark Mode';
-        } else {
-          htmlElement.setAttribute('data-bs-theme', 'dark');
-          themeToggleBtn.textContent = 'Switch to Light Mode';
-        }
-      });
-    </script>
+   
   </body>
 </html>

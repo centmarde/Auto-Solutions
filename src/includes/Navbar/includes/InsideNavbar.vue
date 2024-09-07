@@ -1,5 +1,6 @@
 <template>
-    <div id="nav" class="container-fluid" data-bs-theme="dark">
+   
+    <div id="nav" class="container-fluid" >
         <header class="row">
           <div class="col">  <section class="logo">
         <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
@@ -12,10 +13,8 @@
       </div>
 
       <section  class="nav-links buttons" :class="{ show: isMenuVisible }">
-        <NavLink href="#home" @click="closeMenu">Home</NavLink>
-        <NavLink href="#menu" @click="closeMenu">Menu</NavLink>
-        <NavLink href="#stack" @click="closeMenu">About Us</NavLink>
-        <router-link to="/login" @click="closeMenu">Log-in</router-link>
+        <router-link to="/login" @click="closeMenu">Services</router-link>
+        <router-link to="/login" @click="logout">Log-out</router-link>
       </section></div>
     
 
@@ -26,7 +25,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import NavLink from './Navlink.vue';
+import { doLogout } from "../../../lib/supaBase";
+
+import NavLink from '../Navlink.vue';
 
 const isMenuVisible = ref(false);
 
@@ -36,6 +37,10 @@ const closeMenu = () => {
 const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
 };
+
+const logout = async () => {
+    await doLogout();
+  };
 </script>
 
 <style lang="scss" scoped>
