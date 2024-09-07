@@ -1,5 +1,5 @@
 <template>
-    <div id="nav" class="container-fluid">
+    <div id="nav" class="container-fluid" data-bs-theme="dark">
         <header class="row">
           <div class="col">  <section class="logo">
         <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
@@ -16,10 +16,7 @@
         <NavLink href="#menu" @click="closeMenu">Menu</NavLink>
         <NavLink href="#stack" @click="closeMenu">About Us</NavLink>
         <router-link to="/login" @click="closeMenu">Log-in</router-link>
-       
-      </section>
-      <Toggler/>
-    </div>
+      </section></div>
     
 
      
@@ -30,7 +27,6 @@
 <script setup>
 import { ref } from 'vue';
 import NavLink from './Navlink.vue';
-
 
 const isMenuVisible = ref(false);
 

@@ -1,14 +1,21 @@
 import { createClient } from '@supabase/supabase-js';
 async function doLogout() {
   // Supabase Logout
+
+  const confirmed = window.confirm("are you you want to logout?");
+
   let { error } = await supabase.auth.signOut();
+
+  if(!confirmed){
+    return;
+  }
 
   if (error == null) {
     alert("Logout Successfully!");
 
     // Clear local Storage
     localStorage.clear();
-
+    
     // Redirect to login page
     window.location.pathname = "/";
   } else {

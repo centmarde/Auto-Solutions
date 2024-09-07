@@ -78,9 +78,9 @@ const login = async () => {
 
       // Redirect to home page after successful login
       alert("Login Successfully");
-      window.location.pathname = '/home';
+      window.location.pathname = '/UserLanding';
     } else {
-      alert("Error fetching user profiles.");
+      alert(`${error.message}`);
     }
   } else {
     alert("Error Please Try again or check your password");
