@@ -15,7 +15,7 @@
 export default {
   methods: {
     GoBack() {
-      this.$router.push("/UserLanding");
+      this.$router.push("/Home");
     },
   },
 };
