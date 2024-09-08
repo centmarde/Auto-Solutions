@@ -60,14 +60,10 @@ const login = async () => {
   let session = data?.session;
   let user = data?.user;
 
-  console.log(data);
-
   if (session) {
-    // Store tokens for API
+    // Store tokens and user ID from Supabase
     localStorage.setItem("access_token", session.access_token);
     localStorage.setItem("refresh_token", session.refresh_token);
-
-    // Save user id in local storage
     localStorage.setItem("auth_id", user?.id);
 
     // Fetch user profiles
@@ -82,11 +78,10 @@ const login = async () => {
 
       // Redirect to home page after successful login
       alert("Login Successfully");
-      router.push('/Home'); // Use Vue Router to navigate
+      router.push('/Home'); 
     } else {
-      alert(`${error.message}`);
+      alert(`Profile fetch error: ${error.message}`);
     }
-
   } else {
     // If Supabase login fails, attempt Axios login
     console.log("Supabase login failed, trying Axios");
@@ -98,13 +93,15 @@ const login = async () => {
       });
 
       if (response.data && response.data.success) {
-        // Store tokens and user details from backend response
+        // Store tokens and user ID from backend response
         localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("user_id", response.data.user_id);
+        localStorage.setItem("axios_id", response.data.user_id);
+        console.log("Axios user_id:", response.data.user_id);
+
 
         // Redirect to home page after successful login
         alert("Login Successfully");
-        router.push('/UserLanding'); // Use Vue Router to navigate
+        router.push('/Home'); 
       } else {
         alert("Invalid login credentials. Please try again.");
       }
@@ -119,6 +116,7 @@ const login = async () => {
   loginButton.innerHTML = "Login";
 };
 </script>
+
 
 <style scoped>
 .container {

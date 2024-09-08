@@ -14,24 +14,32 @@
           <div class="bar" :class="{ open: isMenuVisible }"></div>
         </div>
         <nav class="nav-links d-none d-md-flex">
-          <router-link to="/login" class="nav-link" @click="closeMenu">Services</router-link>
-          <router-link to="/login" class="nav-link" @click="logout">Log-out</router-link>
+          <p>{{ username }}</p>
+          <router-link to="/services" class="nav-link" @click="closeMenu">Services</router-link>
+          <router-link to="/" class="nav-link" @click="handleLogout">Log-out</router-link>
         </nav>
       </div>
     </header>
     <div class="nav-links-mobile" v-show="isMenuVisible">
-      <router-link to="/login" @click="closeMenu">Services</router-link>
-      <router-link to="/login" @click="logout">Log-out</router-link>
+      <router-link to="/services" @click="closeMenu">Services</router-link>
+      <router-link to="/login" @click="handleLogout">Log-out</router-link>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { doLogout } from "../../../lib/supaBase";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { supabase, doLogout as supabaseLogout } from '../../../lib/supaBase';
 
+// State
 const isMenuVisible = ref(false);
+const username = ref('');
 
+// Router
+const router = useRouter();
+
+// Methods
 const closeMenu = () => {
   isMenuVisible.value = false;
 };
@@ -40,10 +48,45 @@ const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
 };
 
-const logout = async () => {
-  await doLogout();
+const handleLogout = async () => {
+  try {
+    await supabaseLogout(); // Use the imported logout function
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('axios_id');
+    router.push('/');
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
 };
+
+const fetchUsername = async () => {
+  try {
+    const userId = localStorage.getItem('user_id');
+    if (!userId) {
+      throw new Error('No user ID found in local storage');
+    }
+
+    const { data, error } = await supabase
+      .from('User')
+      .select('username')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    username.value = data.username || 'Guest';
+  } catch (error) {
+    console.error('Error fetching username:', error);
+    username.value = 'Guest'; // Default value in case of an error
+  }
+};
+
+// Fetch username on component mount
+onMounted(fetchUsername);
 </script>
+
 <style lang="scss" scoped>
 .logo {
   gap: 10px;

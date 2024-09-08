@@ -278,7 +278,7 @@ export default {
     },
     async fetchUserData(supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password) {
       try {
-        const response = await axios.post('http://localhost:3001/User', { id: supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password }); // Send password as well
+        const response = await axios.post('http://localhost:3001/User', {supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password }); // Send password as well
         console.log('User data fetched:', response.data);
       } catch (error) {
         console.error('Error fetching user data:', error.message);

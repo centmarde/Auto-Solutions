@@ -42,6 +42,16 @@
           </button>
         </div>
       </div>
+      <div class="row mt-5">
+        <div class="col d-flex justify-content-center"> <button
+            type="button"
+            id="carrental_button"
+            class="btn btn-primary ms-5"
+            @click="gotoUserInfo"
+          >
+            User Info
+          </button></div>
+      </div>
     </div>
   </template>
   
@@ -50,6 +60,9 @@
   import { doLogout } from "../../lib/supaBase";
   import Nav from '../../includes/Navbar/includes/InsideNavbar.vue';
   
+  //enable this for remove auth
+  // localStorage.removeItem("access_token");
+
   
   // Using Vue Router's push method for navigation
   const router = useRouter();
@@ -69,7 +82,9 @@
   const gotoCarOwned = () => {
     router.push("/CarOwned");
   };
-  
+  const gotoUserInfo = () => {
+    router.push("/UserInfo");
+  };
   
   const logout = async () => {
     await doLogout();
