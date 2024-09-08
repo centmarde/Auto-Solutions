@@ -32,6 +32,7 @@
 <script setup>
 import { ref } from 'vue';
 import { supabase } from '../lib/supaBase';
+import axios from 'axios';
 
 const email = ref('');
 const password = ref('');
@@ -48,18 +49,18 @@ const login = async () => {
   loginButton.disabled = true;
   loginButton.innerHTML = `<div class="spinner-border spinner-border-sm me-2" role="status"></div><span>Loading...</span>`;
 
-  // Supabase sign-in
+  // Attempt Supabase sign-in first
   let { data, error } = await supabase.auth.signInWithPassword({
     email: email.value, 
     password: password.value, 
   });
 
-  let session = data.session;
-  let user = data.user;
+  let session = data?.session;
+  let user = data?.user;
 
   console.log(data);
 
-  if (session != null) {
+  if (session) {
     // Store tokens for API
     localStorage.setItem("access_token", session.access_token);
     localStorage.setItem("refresh_token", session.refresh_token);
@@ -83,17 +84,41 @@ const login = async () => {
     } else {
       alert(`${error.message}`);
     }
+
   } else {
-    alert("Error Please Try again or check your password");
-    console.log(error);
+    // If Supabase login fails, attempt Axios login
+    console.log("Supabase login failed, trying Axios");
+
+    try {
+      const response = await axios.post('http://localhost:3001/login', {
+        email: email.value,
+        password: password.value
+      });
+
+      if (response.data && response.data.success) {
+        // Store tokens and user details from backend response
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("user_id", response.data.user_id);
+
+        // Redirect to home page after successful login
+        alert("Login Successfully");
+        window.location.pathname = '/UserLanding';
+      } else {
+        alert("Invalid login credentials. Please try again.");
+      }
+    } catch (axiosError) {
+      console.error("Axios login failed", axiosError);
+      alert("Error: Unable to login. Please check your credentials or try again later.");
+    }
   }
 
- 
+  // Re-enable login button
   loginButton.disabled = false;
   loginButton.innerHTML = "Login";
 };
 
 </script>
+
 
 <style scoped>
 .container {
