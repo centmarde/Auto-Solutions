@@ -5,7 +5,6 @@
         <section class="logo d-flex align-items-center">
           <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
           <h3 class="mb-0 ms-2">Gidor's Auto Solutions</h3>
-         
         </section>
       </div>
       <div class="col-md-6 d-flex justify-content-end align-items-center">
@@ -16,14 +15,14 @@
         </div>
         <nav class="nav-links d-none d-md-flex">
           <p>{{ username }}</p>
-          <router-link to="/login" class="nav-link" @click="closeMenu">Services</router-link>
-          <router-link to="/login" class="nav-link" @click="logout">Log-out</router-link>
+          <router-link to="/services" class="nav-link" @click="closeMenu">Services</router-link>
+          <router-link to="/" class="nav-link" @click="handleLogout">Log-out</router-link>
         </nav>
       </div>
     </header>
     <div class="nav-links-mobile" v-show="isMenuVisible">
-      <router-link to="/login" @click="closeMenu">Services</router-link>
-      <router-link to="/login" @click="logout">Log-out</router-link>
+      <router-link to="/services" @click="closeMenu">Services</router-link>
+      <router-link to="/login" @click="handleLogout">Log-out</router-link>
     </div>
   </div>
 </template>
@@ -31,7 +30,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { supabase } from '../../../lib/supaBase';
+import { supabase, doLogout as supabaseLogout } from '../../../lib/supaBase';
 
 // State
 const isMenuVisible = ref(false);
@@ -49,9 +48,15 @@ const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
 };
 
-const logout = async () => {
-  await supabase.auth.signOut();
-  router.push('/login');
+const handleLogout = async () => {
+  try {
+    await supabaseLogout(); // Use the imported logout function
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('axios_id');
+    router.push('/');
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
 };
 
 const fetchUsername = async () => {

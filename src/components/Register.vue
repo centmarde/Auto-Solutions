@@ -252,9 +252,8 @@ export default {
               alert(`Error: ${error.message}`);
             } else {
               const supa_id = data[0]?.id;
-              console.log(supa_id);
               await this.fetchUserData(supa_id, this.email, this.firstname, this.middlename, this.lastname, this.username, this.gender, this.birthdate, address, this.password);
-              alert('Register Successfully');
+              alert('Register Successfully, please verify your email. <a href="./login.html">Click Here!</a>');
               console.log(data);
             }
           } catch (error) {
@@ -279,29 +278,22 @@ export default {
     },
     async fetchUserData(supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password) {
       try {
-        const response = await axios.post('http://localhost:3001/User', {
-          id: supa_id,
-          email,
-          firstname,
-          middlename,
-          lastname,
-          username,
-          gender,
-          birthdate,
-          address,
-          password
-        });
+        const response = await axios.post('http://localhost:3001/User', {supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password }); // Send password as well
         console.log('User data fetched:', response.data);
       } catch (error) {
         console.error('Error fetching user data:', error.message);
       }
-    }
+    },
   },
   mounted() {
     this.fetchRegions();
   },
 };
 </script>
+
+
+
+
 
 
 <style scoped>

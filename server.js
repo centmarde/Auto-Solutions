@@ -19,7 +19,8 @@ const initDb = async () => {
 
   await db.exec(`
     CREATE TABLE IF NOT EXISTS User (
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      supa_id INTEGER UNIQUE,
       email TEXT UNIQUE,
       firstname TEXT,
       middlename TEXT,
@@ -47,7 +48,7 @@ const initDb = async () => {
 const dbPromise = initDb();
 
 app.post('/User', async (req, res) => {
-  const { id, email, firstname, middlename, lastname, username, gender, birthdate, address, password } = req.body;
+  const { supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password } = req.body;
 
   try {
     const db = await dbPromise;
@@ -61,9 +62,9 @@ app.post('/User', async (req, res) => {
 
     // Insert new user if not exists
     await db.run(
-      `INSERT INTO User (id,email, firstname, middlename, lastname, username, gender, birthdate, address, password) 
+      `INSERT INTO User (supa_id,email, firstname, middlename, lastname, username, gender, birthdate, address, password) 
        VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id, email, firstname, middlename, lastname, username, gender, birthdate, address, password]
+      [supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password]
     );
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -147,6 +148,38 @@ app.post('/update-profile', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.post('/update-profile', async (req, res) => {
+  const { supa_id, firstname, middlename, lastname, username, birthdate, address, password } = req.body;
+
+  try {
+    const db = await dbPromise;
+
+    // Check if the user exists
+    const existingUser = await db.get("SELECT * FROM User WHERE supa_id = ?", [supa_id]);
+
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update user details
+    await db.run(
+      `UPDATE User
+       SET firstname = ?, middlename = ?, lastname = ?, username = ?, birthdate = ?, address = ?, password = ?
+       WHERE supa_id = ?`,
+      [firstname, middlename, lastname, username, birthdate, address, password, supa_id]
+    );
+
+    res.status(200).json({ message: 'User profile updated successfully' });
+  } catch (err) {
+    if (err.code === 'SQLITE_CONSTRAINT') {
+      return res.status(400).json({ error: 'Unique constraint failed' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

@@ -29,7 +29,6 @@
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </select>
-
                                 </div>
                             </div>
 
@@ -106,33 +105,38 @@ export default {
             birthdate: '',
             address: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            supa_id: '' // Add supa_id to data properties
         };
     },
     async mounted() {
         // Fetch the user's existing profile data when the component is mounted
         try {
             const userId = localStorage.getItem('user_id');
+
             const { data, error } = await supabase
                 .from('User')
                 .select('*')
                 .eq('id', userId)
                 .single(); // Fetch only one user record
 
-            if (error) throw error;
-
-            // Pre-fill the fields with existing data
-            if (data) {
-                this.profilePicture = data.profilePicture || '';
-                this.username = data.username || '';
-                this.firstname = data.firstname || '';
-                this.middlename = data.middlename || '';
-                this.lastname = data.lastname || '';   
-                this.birthdate = data.birthdate || '';
-                this.address = data.address || '';
-                this.password = data.password || '';
-                this.confirmPassword = data.password || '';
+            if (error) {
+                console.error('Error fetching user profile:', error);
+                return;
             }
+
+            this.supa_id = data.id; // Save supa_id to data
+            // Pre-fill the fields with existing data
+            this.profilePicture = data.profilePicture || '';
+            this.username = data.username || '';
+            this.firstname = data.firstname || '';
+            this.middlename = data.middlename || '';
+            this.lastname = data.lastname || '';
+            this.birthdate = data.birthdate || '';
+            this.address = data.address || '';
+            this.password = ''; // Password should not be pre-filled for security reasons
+            this.confirmPassword = ''; // Same for confirmPassword
+
         } catch (error) {
             console.error('Error fetching user profile:', error);
         }
@@ -155,51 +159,71 @@ export default {
                 return;
             }
 
-            try {
-                const userId = localStorage.getItem('user_id');
-                
-                // Update Supabase
-                const { data, error } = await supabase
-                    .from('User')
-                    .update({
-                        username: this.username,
-                        firstname: this.firstname,
-                        middlename: this.middlename,
-                        lastname: this.lastname,
-                        gender: this.gender,
-                        birthdate: this.birthdate,
-                        address: this.address,
-                        password: this.password
-                    })
-                    .eq('id', userId);
+            // Construct the data object for the profile update
+            const updatedData = {
+                username: this.username || undefined,
+                firstname: this.firstname || undefined,
+                middlename: this.middlename || undefined,
+                lastname: this.lastname || undefined,
+                gender: this.gender || undefined,
+                birthdate: this.birthdate || undefined,
+                address: this.address || undefined,
+                password: this.password ? this.password : undefined
+            };
 
-                if (error) throw error;
+            try {
+                // Update Supabase
+                const { data: supabaseData, error: supabaseError } = await supabase
+                    .from('User')
+                    .update(updatedData)
+                    .eq('id', this.supa_id);
+
+                if (supabaseError) {
+                    // Handle Supabase update error
+                    console.error('Supabase error:', supabaseError);
+                    alert(`Error updating Supabase: ${supabaseError.message}`);
+                    return;
+                }
 
                 // Update SQLite database via backend
-                await axios.post('http://localhost:3001/update-profile', {
-                    userId,
-                    username: this.username,
-                    firstname: this.firstname,
-                    middlename: this.middlename,
-                    lastname: this.lastname,
-                    gender: this.gender,
-                    birthdate: this.birthdate,
-                    address: this.address,
-                    password: this.password
+                const response = await axios.post('http://localhost:3001/update-profile', {
+                    supa_id: this.supa_id, // Send supa_id for filtering
+                    username: this.username || undefined,
+                    firstname: this.firstname || undefined,
+                    middlename: this.middlename || undefined,
+                    lastname: this.lastname || undefined,
+                    birthdate: this.birthdate || undefined,
+                    address: this.address || undefined,
+                    password: this.password ? this.password : undefined
                 });
 
+                if (response.status !== 200) {
+                    // Handle unexpected response status
+                    throw new Error('Failed to update profile in SQLite');
+                }
+
                 alert('Profile updated successfully');
+
             } catch (error) {
+                // General error handling
                 console.error('Error updating profile:', error);
-                alert('Failed to update profile');
+
+                if (error.response) {
+                    // Server response error
+                    if (error.response.data && error.response.data.message) {
+                        alert(`Error: ${error.response.data.message}`);
+                    } else {
+                        alert('An error occurred: ' + error.message);
+                    }
+                } else {
+                    // Network or unexpected errors
+                    alert('Failed to update profile: ' + error.message);
+                }
             }
         }
     }
 };
 </script>
-
-
-
 
 <style scoped>
 .card {
