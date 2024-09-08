@@ -6,7 +6,7 @@ import NotFound from '../components/Notfoundpage.vue';
 
 //login contents
 import Home from '../components/includes/Home.vue';
-import UserLanding from '../components/includes/UserLanding.vue'
+// import UserLanding from '../components/includes/Home.vue'
 import CarRepair from '../includes/HomeSection/CarRepair.vue'
 import CarParts from '../includes/HomeSection/CarParts.vue'
 import CarRental from '../includes/HomeSection/CarRental.vue';
@@ -17,7 +17,7 @@ const routes = [
   { path: '/', component: Hero },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/UserLanding', component: UserLanding, meta: { requiresAuth: true } },
+  /* { path: '/UserLanding', component: UserLanding, meta: { requiresAuth: true } }, */
   { path: '/Home', component: Home, meta: { requiresAuth: true } },
   { path: '/CarRepair', component: CarRepair, meta: { requiresAuth: true } },
   { path: '/CarParts', component: CarParts, meta: { requiresAuth: true } },
