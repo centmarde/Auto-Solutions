@@ -198,7 +198,7 @@ export default {
       this.selectedBarangayName = barangay.name;
     },
     async submitForm() {
-      if (!this.firstname || !this.lastname || !this.username || !this.gender ||!this.email || !this.password || !this.passwordConfirm || !this.birthdate || !this.selectedRegionCode || !this.selectedProvinceCode || !this.selectedCityCode || !this.selectedBarangayCode) {
+      if (!this.firstname || !this.lastname || !this.username || !this.gender || !this.email || !this.password || !this.passwordConfirm || !this.birthdate || !this.selectedRegionCode || !this.selectedProvinceCode || !this.selectedCityCode || !this.selectedBarangayCode) {
         alert('Please fill out all required fields.');
         return;
       }
@@ -228,9 +228,9 @@ export default {
 
         console.log('User signed up:', signUpData);
 
-        let user_id = signUpData?.user?.id;
+        const user_id = signUpData?.user?.id;
 
-        if (user_id != null) {
+        if (user_id) {
           // Inserting additional user details into the 'User' table
           const additionalUserData = {
             firstname: this.firstname,
@@ -240,38 +240,38 @@ export default {
             email: this.email,
             gender: this.gender,
             birthdate: this.birthdate,
-            auth_id: user_id, 
+            auth_id: user_id, // Supabase user ID
             address: `${this.selectedBarangayName}, ${this.selectedCityName}, ${this.selectedProvinceName}, ${this.selectedRegionName}`,
           };
 
           try {
-            // Inserting the data into the 'User' table
+            // Insert the data into the 'User' table
             const { data, error } = await supabase
               .from('User')
               .insert([additionalUserData])
               .select();
 
-            if (error == null) {
-              
-              alert('Register Successfully, please verify your email. <a href="./login.html">Click Here!</a>');
-              console.log(data);
-            } else {
-             
+            if (error) {
               console.error('Error inserting additional data:', error.message);
               alert(`Error: ${error.message}`);
+            } else {
+              const supa_id = data[0]?.id; // Get the ID from the inserted data
+
+              // Fetch the id and email from the server
+              await this.fetchUserData(supa_id, this.email);
+
+              alert('Register Successfully, please verify your email. <a href="./login.html">Click Here!</a>');
+              console.log(data);
             }
           } catch (error) {
-           
             console.error('Unexpected error:', error.message);
             alert(`Error: ${error.message}`);
           } finally {
-            
             this.$refs.form_register.reset();
             submitBtn.disabled = false;
             submitBtn.innerText = 'Register';
           }
         } else {
-          
           console.error('User ID is null');
           alert('Error: User ID is null');
         }
@@ -280,9 +280,16 @@ export default {
         console.error('Error submitting form:', error.message);
         alert('An unexpected error occurred. Please try again.');
       } finally {
-        
         submitBtn.disabled = false;
         submitBtn.innerText = 'Submit';
+      }
+    },
+    async fetchUserData(supa_id, email) {
+      try {
+        const response = await axios.post('http://localhost:3001/User', { id: supa_id, email }); // Send the id and email
+        console.log('User data fetched:', response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
       }
     },
   },
@@ -291,6 +298,8 @@ export default {
   },
 };
 </script>
+
+
 
 
 <style scoped>
