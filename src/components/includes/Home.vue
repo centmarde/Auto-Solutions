@@ -21,7 +21,6 @@
 <script setup>
 import { doLogout } from '../../lib/supaBase.js';
 import Contents from '../../includes/HomeSection/Contents.vue'
-import CarOwned from './CarOwned.vue'
 </script>
 
 <style lang="scss" scoped>

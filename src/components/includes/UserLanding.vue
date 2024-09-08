@@ -4,15 +4,16 @@
     <div class="container">
       <div class="row">
         <div class="col d-flex justify-content-center">
+         
           <button
             type="button"
-            id="logout_button"
-            class="btn btn-primary"
-            @click="logout"
+            id="carparts_button"
+            class="btn btn-primary ms-5"
+            @click="gotoCarOwned"
           >
-            Logout
+            Cars Owned
           </button>
-  
+
           <button
             type="button"
             id="carparts_button"
@@ -49,6 +50,7 @@
   import { doLogout } from "../../lib/supaBase";
   import Nav from '../../includes/Navbar/includes/InsideNavbar.vue';
   
+  
   // Using Vue Router's push method for navigation
   const router = useRouter();
   
@@ -63,6 +65,11 @@
   const gotoCarRental = () => {
     router.push("/CarRental");
   };
+
+  const gotoCarOwned = () => {
+    router.push("/CarOwned");
+  };
+  
   
   const logout = async () => {
     await doLogout();

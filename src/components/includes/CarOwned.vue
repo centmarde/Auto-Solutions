@@ -56,6 +56,10 @@
         </span>
         <span v-else>Submit</span>
       </button>
+
+      <button type="button" id="Goback_button" class="btn btn-primary ms-5" @click="GoBack">
+        Go Back
+      </button>
     </form>
   </div>
 </template>
@@ -67,24 +71,27 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      cars: [], 
+      cars: [],
       selectedMake: '',
       selectedModel: '',
       selectedCar: null,
-      uniqueMakes: [], 
-      filteredModels: [], 
-      yearsOwned: '',  
-      description: '', 
-      isSubmitting: false 
+      uniqueMakes: [],
+      filteredModels: [],
+      yearsOwned: '',
+      description: '',
+      isSubmitting: false,
     };
   },
   created() {
     this.fetchCarData();
   },
   methods: {
+    GoBack() {
+      this.$router.push("/UserLanding");
+    },
     async fetchCarData() {
       try {
-        const response = await axios.get('https://thestrongestalgorithm.github.io/api/allcars.json');
+        const response = await axios.get('https://centmarde.github.io/api/allcars.json');
         this.cars = response.data;
         this.uniqueMakes = [...new Set(this.cars.map(car => car.Brand))];
       } catch (error) {
@@ -104,17 +111,13 @@ export default {
       this.selectedCar = this.cars.find(
         car => car.Brand === this.selectedMake && car.Model === this.selectedModel
       );
-
-    
     },
     async submitForm() {
-      this.isSubmitting = true; 
-
+      this.isSubmitting = true;
       try {
         const userId = localStorage.getItem('user_id');
-
         const { data, error } = await supabase
-          .from('Car_owned') 
+          .from('Car_owned')
           .insert([
             {
               brand: this.selectedMake,
@@ -125,17 +128,18 @@ export default {
             }
           ])
           .select();
-
         if (error) throw error;
-
-        alert('Form submitted successfully:');
-        
+        alert('Form submitted successfully');
       } catch (error) {
         console.error('Error submitting form:', error);
       } finally {
-        this.isSubmitting = false; 
+        this.isSubmitting = false;
       }
     }
   }
 };
 </script>
+
+<style scoped>
+/* Add your styles here */
+</style>

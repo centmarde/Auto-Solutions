@@ -10,6 +10,7 @@ import UserLanding from '../components/includes/UserLanding.vue'
 import CarRepair from '../includes/HomeSection/CarRepair.vue'
 import CarParts from '../includes/HomeSection/CarParts.vue'
 import CarRental from '../includes/HomeSection/CarRental.vue';
+import CarOwned from '../components/includes/CarOwned.vue';
 
 
 const routes = [
@@ -21,6 +22,8 @@ const routes = [
   { path: '/CarRepair', component: CarRepair, meta: { requiresAuth: true } },
   { path: '/CarParts', component: CarParts, meta: { requiresAuth: true } },
   { path: '/CarRental', component: CarRental, meta: { requiresAuth: true } },
+  { path: '/CarOwned', component: CarOwned, meta: { requiresAuth: true } },
+
 
   // { path: '/home', component: Home, meta: { requiresAuth: true } },
 
@@ -45,7 +48,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/', '/login', '/register'];
 
   // Pages that require authentication
-  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/home'];
+  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/home', '/CarOwned'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
