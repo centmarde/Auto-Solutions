@@ -104,7 +104,7 @@ const login = async () => {
 
         // Redirect to home page after successful login
         alert("Login Successfully");
-        router.push('/UserLanding'); // Use Vue Router to navigate
+        router.push('/Home'); // Use Vue Router to navigate
       } else {
         alert("Invalid login credentials. Please try again.");
       }

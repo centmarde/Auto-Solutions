@@ -5,6 +5,7 @@
         <section class="logo d-flex align-items-center">
           <img class="logopic" src="@/assets/images/logo.jpeg" alt="logo" />
           <h3 class="mb-0 ms-2">Gidor's Auto Solutions</h3>
+         
         </section>
       </div>
       <div class="col-md-6 d-flex justify-content-end align-items-center">
@@ -14,6 +15,7 @@
           <div class="bar" :class="{ open: isMenuVisible }"></div>
         </div>
         <nav class="nav-links d-none d-md-flex">
+          <p>{{ username }}</p>
           <router-link to="/login" class="nav-link" @click="closeMenu">Services</router-link>
           <router-link to="/login" class="nav-link" @click="logout">Log-out</router-link>
         </nav>
@@ -27,11 +29,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { doLogout } from "../../../lib/supaBase";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { supabase } from '../../../lib/supaBase';
 
+// State
 const isMenuVisible = ref(false);
+const username = ref('');
 
+// Router
+const router = useRouter();
+
+// Methods
 const closeMenu = () => {
   isMenuVisible.value = false;
 };
@@ -41,9 +50,38 @@ const toggleMenu = () => {
 };
 
 const logout = async () => {
-  await doLogout();
+  await supabase.auth.signOut();
+  router.push('/login');
 };
+
+const fetchUsername = async () => {
+  try {
+    const userId = localStorage.getItem('user_id');
+    if (!userId) {
+      throw new Error('No user ID found in local storage');
+    }
+
+    const { data, error } = await supabase
+      .from('User')
+      .select('username')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    username.value = data.username || 'Guest';
+  } catch (error) {
+    console.error('Error fetching username:', error);
+    username.value = 'Guest'; // Default value in case of an error
+  }
+};
+
+// Fetch username on component mount
+onMounted(fetchUsername);
 </script>
+
 <style lang="scss" scoped>
 .logo {
   gap: 10px;

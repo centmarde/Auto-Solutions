@@ -11,6 +11,7 @@ import CarRepair from '../includes/HomeSection/CarRepair.vue'
 import CarParts from '../includes/HomeSection/CarParts.vue'
 import CarRental from '../includes/HomeSection/CarRental.vue';
 import CarOwned from '../components/includes/CarOwned.vue';
+import UserInfo from '../components/includes/UserInfo.vue';
 
 
 const routes = [
@@ -23,6 +24,7 @@ const routes = [
   { path: '/CarParts', component: CarParts, meta: { requiresAuth: true } },
   { path: '/CarRental', component: CarRental, meta: { requiresAuth: true } },
   { path: '/CarOwned', component: CarOwned, meta: { requiresAuth: true } },
+  { path: '/UserInfo', component: UserInfo, meta: { requiresAuth: true } },
 
 
   // { path: '/home', component: Home, meta: { requiresAuth: true } },
@@ -48,7 +50,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/', '/login', '/register'];
 
   // Pages that require authentication
-  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/home', '/CarOwned'];
+  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/home', '/CarOwned', '/UserInfo'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
@@ -57,7 +59,7 @@ router.beforeEach((to, from, next) => {
 
   // Redirect to home if already logged in and trying to access public pages
   if (publicPages.includes(to.path) && isLoggedIn) {
-    return next('/UserLanding');
+    return next('/Home');
   }
 
   // Example for role-based access (uncomment if needed)

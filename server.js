@@ -2,7 +2,7 @@ import express from 'express';
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import cors from 'cors';
-import jwt from 'jsonwebtoken'; // Import jsonwebtoken for generating tokens
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const port = 3001;
@@ -19,7 +19,7 @@ const initDb = async () => {
 
   await db.exec(`
     CREATE TABLE IF NOT EXISTS User (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY,
       email TEXT UNIQUE,
       firstname TEXT,
       middlename TEXT,
@@ -32,16 +32,26 @@ const initDb = async () => {
     )
   `);
 
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS Cars (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      brand TEXT,
+      model TEXT,
+      description TEXT
+    )
+  `);
+
   return db;
 };
 
 const dbPromise = initDb();
 
 app.post('/User', async (req, res) => {
-  const db = await dbPromise;
-  const { email, firstname, middlename, lastname, username, gender, birthdate, address, password } = req.body;
+  const { id, email, firstname, middlename, lastname, username, gender, birthdate, address, password } = req.body;
 
   try {
+    const db = await dbPromise;
+
     // Check if the user already exists
     const existingUser = await db.get("SELECT * FROM User WHERE email = ?", [email]);
 
@@ -51,9 +61,9 @@ app.post('/User', async (req, res) => {
 
     // Insert new user if not exists
     await db.run(
-      `INSERT INTO User (email, firstname, middlename, lastname, username, gender, birthdate, address, password) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [email, firstname, middlename, lastname, username, gender, birthdate, address, password]
+      `INSERT INTO User (id,email, firstname, middlename, lastname, username, gender, birthdate, address, password) 
+       VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [id, email, firstname, middlename, lastname, username, gender, birthdate, address, password]
     );
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -66,10 +76,11 @@ app.post('/User', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const db = await dbPromise;
   const { email, password } = req.body;
 
   try {
+    const db = await dbPromise;
+
     // Retrieve the user from the database by email
     const user = await db.get("SELECT * FROM User WHERE email = ?", [email]);
 
@@ -91,6 +102,47 @@ app.post('/login', async (req, res) => {
       message: 'Login successful',
       access_token: token
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/insertCars', async (req, res) => {
+  const { cars } = req.body;
+
+  try {
+    const db = await dbPromise;
+
+    const insertCarStmt = await db.prepare(`
+      INSERT INTO Cars (brand, model, description) 
+      VALUES (?, ?, ?)
+    `);
+
+    for (const car of cars) {
+      await insertCarStmt.run(car.brand, car.model, car.description);
+    }
+
+    await insertCarStmt.finalize();
+    
+    res.status(201).json({ message: 'Car data inserted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/update-profile', async (req, res) => {
+  const { userId, username, firstname, middlename, lastname, gender, birthdate, address, password } = req.body;
+  
+  const query = `
+    UPDATE User
+    SET username = ?, firstname = ?, middlename = ?, lastname = ?, gender = ?, birthdate = ?, address = ?, password = ?
+    WHERE id = ?
+  `;
+
+  try {
+    const db = await dbPromise;
+    await db.run(query, [username, firstname, middlename, lastname, gender, birthdate, address, password, userId]);
+    res.json({ message: 'Profile updated successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
