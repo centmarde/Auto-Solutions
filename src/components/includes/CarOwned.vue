@@ -90,14 +90,20 @@ export default {
       this.$router.push("/Home");
     },
     async fetchCarData() {
-      try {
-        const response = await axios.get('https://centmarde.github.io/api/allcars.json');
-        this.cars = response.data;
-        this.uniqueMakes = [...new Set(this.cars.map(car => car.Brand))];
-      } catch (error) {
-        console.error('Error fetching car data:', error);
-      }
-    },
+  try {
+    const response = await axios.get('https://centmarde.github.io/api/allcars.json');
+    this.cars = response.data;
+    this.uniqueMakes = [...new Set(this.cars.map(car => car.Brand))];
+
+    // Send the fetched car data to the local server
+    await axios.post('http://localhost:3001/insertCars', { cars: this.cars });
+
+    console.log('Car data sent to the server');
+  } catch (error) {
+    console.error('Error fetching car data or sending to server:', error);
+  }
+},
+
     selectBrand(brand) {
       this.selectedMake = brand;
       this.filterModels();
