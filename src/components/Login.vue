@@ -31,12 +31,14 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // Import Vue Router's useRouter
 import { supabase } from '../lib/supaBase';
 import axios from 'axios';
 
 const email = ref('');
 const password = ref('');
 const passwordType = ref('password');
+const router = useRouter(); // Get router instance
 
 const togglePassword = () => {
   passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
@@ -51,8 +53,8 @@ const login = async () => {
 
   // Attempt Supabase sign-in first
   let { data, error } = await supabase.auth.signInWithPassword({
-    email: email.value, 
-    password: password.value, 
+    email: email.value,
+    password: password.value,
   });
 
   let session = data?.session;
@@ -80,7 +82,7 @@ const login = async () => {
 
       // Redirect to home page after successful login
       alert("Login Successfully");
-      window.location.pathname = '/UserLanding';
+      router.push('/Home'); // Use Vue Router to navigate
     } else {
       alert(`${error.message}`);
     }
@@ -102,7 +104,7 @@ const login = async () => {
 
         // Redirect to home page after successful login
         alert("Login Successfully");
-        window.location.pathname = '/UserLanding';
+        router.push('/UserLanding'); // Use Vue Router to navigate
       } else {
         alert("Invalid login credentials. Please try again.");
       }
@@ -116,9 +118,7 @@ const login = async () => {
   loginButton.disabled = false;
   loginButton.innerHTML = "Login";
 };
-
 </script>
-
 
 <style scoped>
 .container {
