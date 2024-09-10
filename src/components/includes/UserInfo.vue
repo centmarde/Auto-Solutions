@@ -58,7 +58,7 @@
                                 </div>
                             </div>
 
-                           
+
 
                             <!-- Save Button -->
                             <div class="text-end">
@@ -122,7 +122,6 @@ export default {
             this.lastname = data.lastname || '';
             this.birthdate = data.birthdate || '';
             this.address = data.address || '';
-         
         } catch (error) {
             console.error('Error fetching user profile:', error);
         }
@@ -139,8 +138,6 @@ export default {
             }
         },
         async updateProfile() {
-            
-          
 
             // Construct the data object for the profile update
             const updatedData = {
@@ -151,7 +148,6 @@ export default {
                 gender: this.gender || undefined,
                 birthdate: this.birthdate || undefined,
                 address: this.address || undefined,
-              
             };
 
             try {
@@ -177,7 +173,6 @@ export default {
                     lastname: this.lastname || undefined,
                     birthdate: this.birthdate || undefined,
                     address: this.address || undefined,
-                   
                 });
 
                 if (response.status !== 200) {
