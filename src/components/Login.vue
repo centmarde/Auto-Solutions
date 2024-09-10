@@ -96,7 +96,8 @@ const login = async () => {
         // Store tokens and user ID from backend response
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("axios_id", response.data.user_id);
-        console.log("Axios user_id:", response.data.user_id);
+        console.log("Axios user_id:", response.data.id);
+
 
 
         // Redirect to home page after successful login
