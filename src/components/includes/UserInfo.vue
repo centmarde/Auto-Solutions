@@ -58,17 +58,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" id="password" v-model="password" class="form-control">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                    <input type="password" id="confirmPassword" v-model="confirmPassword"
-                                        class="form-control">
-                                </div>
-                            </div>
+
 
                             <!-- Save Button -->
                             <div class="text-end">
@@ -104,8 +94,6 @@ export default {
             gender: '',
             birthdate: '',
             address: '',
-            password: '',
-            confirmPassword: '',
             supa_id: '' // Add supa_id to data properties
         };
     },
@@ -134,9 +122,6 @@ export default {
             this.lastname = data.lastname || '';
             this.birthdate = data.birthdate || '';
             this.address = data.address || '';
-            this.password = ''; // Password should not be pre-filled for security reasons
-            this.confirmPassword = ''; // Same for confirmPassword
-
         } catch (error) {
             console.error('Error fetching user profile:', error);
         }
@@ -153,11 +138,6 @@ export default {
             }
         },
         async updateProfile() {
-            // Validate passwords match
-            if (this.password !== this.confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
 
             // Construct the data object for the profile update
             const updatedData = {
@@ -168,7 +148,6 @@ export default {
                 gender: this.gender || undefined,
                 birthdate: this.birthdate || undefined,
                 address: this.address || undefined,
-                password: this.password ? this.password : undefined
             };
 
             try {
@@ -194,7 +173,6 @@ export default {
                     lastname: this.lastname || undefined,
                     birthdate: this.birthdate || undefined,
                     address: this.address || undefined,
-                    password: this.password ? this.password : undefined
                 });
 
                 if (response.status !== 200) {

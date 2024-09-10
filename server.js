@@ -131,23 +131,7 @@ app.post('/insertCars', async (req, res) => {
   }
 });
 
-app.post('/update-profile', async (req, res) => {
-  const { userId, username, firstname, middlename, lastname, gender, birthdate, address, password } = req.body;
-  
-  const query = `
-    UPDATE User
-    SET username = ?, firstname = ?, middlename = ?, lastname = ?, gender = ?, birthdate = ?, address = ?, password = ?
-    WHERE id = ?
-  `;
 
-  try {
-    const db = await dbPromise;
-    await db.run(query, [username, firstname, middlename, lastname, gender, birthdate, address, password, userId]);
-    res.json({ message: 'Profile updated successfully' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 app.post('/update-profile', async (req, res) => {
   const { supa_id, firstname, middlename, lastname, username, birthdate, address, password } = req.body;
