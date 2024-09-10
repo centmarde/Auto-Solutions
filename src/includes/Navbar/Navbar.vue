@@ -1,5 +1,6 @@
 <template>
-  <header class="navbar navbar-expand-lg fixed-top" :class="{'navbar-dark': theme === 'dark', 'navbar-light': theme === 'light'}" :style="{ backgroundColor: theme === 'dark' ? 'rgba(82, 52, 52, 0.5)' : 'rgba(255, 255, 255, 0.5)' }">
+  <header class="navbar navbar-expand-lg fixed-top" :class="{'navbar-dark': theme === 'dark', 'navbar-light': theme === 'light'}" :style="{ backgroundColor: theme === 'dark' ? 'rgba(52, 52, 52, 0.8)' : 'rgba(200, 200, 200, 0.8)', color: theme === 'light' ? '#333' : '#fff' }">
+
     <div class="container-fluid">
       <!-- Logo and Title Section -->
       <a class="navbar-brand d-flex align-items-center" href="#">
@@ -60,6 +61,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+
 
 const isMenuVisible = ref(false);
 const theme = ref(localStorage.getItem('theme') || 'dark'); // Load saved theme or default to dark
