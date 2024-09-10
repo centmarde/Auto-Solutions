@@ -71,7 +71,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      cars: [],
+      cars: [], // Holds the fetched car data
       selectedMake: '',
       selectedModel: '',
       selectedCar: null,
@@ -80,30 +80,29 @@ export default {
       yearsOwned: '',
       description: '',
       isSubmitting: false,
+      isDataFetched: false, // Flag to check if data has been fetched
     };
   },
-  created() {
-    this.fetchCarData();
+  async mounted() { // Use mounted lifecycle hook to fetch data after component is mounted
+    if (!this.isDataFetched) {
+      await this.fetchCarData();
+    }
   },
   methods: {
     GoBack() {
       this.$router.push("/Home");
     },
     async fetchCarData() {
-  try {
-    const response = await axios.get('https://centmarde.github.io/api/allcars.json');
-    this.cars = response.data;
-    this.uniqueMakes = [...new Set(this.cars.map(car => car.Brand))];
-
-    // Send the fetched car data to the local server
-    await axios.post('http://localhost:3001/insertCars', { cars: this.cars });
-
-    console.log('Car data sent to the server');
-  } catch (error) {
-    console.error('Error fetching car data or sending to server:', error);
-  }
-},
-
+      try {
+        // Fetch data from external API
+        const response = await axios.get('https://centmarde.github.io/api/allcars.json');
+        this.cars = response.data;
+        this.uniqueMakes = [...new Set(this.cars.map(car => car.Brand))];
+        this.isDataFetched = true; // Set flag to true after data is fetched
+      } catch (error) {
+        console.error('Error fetching car data:', error);
+      }
+    },
     selectBrand(brand) {
       this.selectedMake = brand;
       this.filterModels();
@@ -122,7 +121,9 @@ export default {
       this.isSubmitting = true;
       try {
         const userId = localStorage.getItem('user_id');
-        const { data, error } = await supabase
+        
+        // Post form data to Supabase
+        const { data: supabaseData, error: supabaseError } = await supabase
           .from('Car_owned')
           .insert([
             {
@@ -134,7 +135,18 @@ export default {
             }
           ])
           .select();
-        if (error) throw error;
+        if (supabaseError) throw supabaseError;
+
+        // Post form data to the SQLite server
+        const response = await axios.post('http://localhost:3001/submitForm', {
+          brand: this.selectedMake,
+          model: this.selectedModel,
+          years_owned: this.yearsOwned,
+          description: this.description,
+          user_id: userId,
+        });
+
+        if (response.data.error) throw new Error(response.data.error);
         alert('Form submitted successfully');
       } catch (error) {
         console.error('Error submitting form:', error);
@@ -148,4 +160,11 @@ export default {
 
 <style scoped>
 /* Add your styles here */
+.card {
+  cursor: pointer;
+}
+.brand-card img {
+  max-width: 100%;
+  height: auto;
+}
 </style>

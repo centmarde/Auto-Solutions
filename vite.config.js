@@ -8,6 +8,6 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
-  
+  },
+  assetsInclude: ['**/*.glb'], // Add this line to handle .glb files
 });

@@ -34,11 +34,14 @@ const initDb = async () => {
   `);
 
   await db.exec(`
-    CREATE TABLE IF NOT EXISTS Cars (
+    CREATE TABLE IF NOT EXISTS CarOwned (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       brand TEXT,
       model TEXT,
-      description TEXT
+      description TEXT,
+      years_owned INTEGER,
+      user_id INTEGER,
+      FOREIGN KEY (user_id) REFERENCES User (id)
     )
   `);
 
@@ -62,8 +65,8 @@ app.post('/User', async (req, res) => {
 
     // Insert new user if not exists
     await db.run(
-      `INSERT INTO User (supa_id,email, firstname, middlename, lastname, username, gender, birthdate, address, password) 
-       VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO User (supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [supa_id, email, firstname, middlename, lastname, username, gender, birthdate, address, password]
     );
 
@@ -108,49 +111,27 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/insertCars', async (req, res) => {
-  const { cars } = req.body;
+app.post('/submitForm', async (req, res) => {
+  const { brand, model, years_owned, description, user_id } = req.body;
 
   try {
     const db = await dbPromise;
 
-    const insertCarStmt = await db.prepare(`
-      INSERT INTO Cars (brand, model, description) 
-      VALUES (?, ?, ?)
-    `);
-
-    for (const car of cars) {
-      await insertCarStmt.run(car.brand, car.model, car.description);
-    }
-
-    await insertCarStmt.finalize();
+    // Insert car data
+    await db.run(
+      `INSERT INTO CarOwned (brand, model, description, years_owned, user_id) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [brand, model, description, years_owned, user_id]
+    );
     
-    res.status(201).json({ message: 'Car data inserted successfully' });
+    res.status(201).json({ message: 'Car data submitted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 app.post('/update-profile', async (req, res) => {
-  const { userId, username, firstname, middlename, lastname, gender, birthdate, address, password } = req.body;
-  
-  const query = `
-    UPDATE User
-    SET username = ?, firstname = ?, middlename = ?, lastname = ?, gender = ?, birthdate = ?, address = ?, password = ?
-    WHERE id = ?
-  `;
-
-  try {
-    const db = await dbPromise;
-    await db.run(query, [username, firstname, middlename, lastname, gender, birthdate, address, password, userId]);
-    res.json({ message: 'Profile updated successfully' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.post('/update-profile', async (req, res) => {
-  const { supa_id, firstname, middlename, lastname, username, birthdate, address, password } = req.body;
+  const { supa_id, firstname, middlename, lastname, username, birthdate, address } = req.body;
 
   try {
     const db = await dbPromise;
@@ -165,9 +146,9 @@ app.post('/update-profile', async (req, res) => {
     // Update user details
     await db.run(
       `UPDATE User
-       SET firstname = ?, middlename = ?, lastname = ?, username = ?, birthdate = ?, address = ?, password = ?
+       SET firstname = ?, middlename = ?, lastname = ?, username = ?, birthdate = ?, address = ?
        WHERE supa_id = ?`,
-      [firstname, middlename, lastname, username, birthdate, address, password, supa_id]
+      [firstname, middlename, lastname, username, birthdate, address, supa_id]
     );
 
     res.status(200).json({ message: 'User profile updated successfully' });
@@ -178,8 +159,6 @@ app.post('/update-profile', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
