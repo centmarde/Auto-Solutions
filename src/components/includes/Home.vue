@@ -1,7 +1,8 @@
 <template>
     <Nav />
     <br><br> <br><br><br>
-    <div class="container">
+    
+   <!--  <div class="container">
       <div class="row">
         <div class="col d-flex justify-content-center">
          
@@ -52,7 +53,7 @@
             User Info
           </button></div>
       </div>
-    </div>
+    </div> -->
   </template>
   
   <script setup>
