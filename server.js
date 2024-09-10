@@ -131,8 +131,6 @@ app.post('/insertCars', async (req, res) => {
   }
 });
 
-
-
 app.post('/update-profile', async (req, res) => {
   const { supa_id, firstname, middlename, lastname, username, birthdate, address, password } = req.body;
 
