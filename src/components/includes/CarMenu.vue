@@ -2,7 +2,7 @@
 
     <div class="model-viewer-container">
 
-        <model-viewer src="../../../public/models/toyota_supra.glb" ar ar-modes="webxr scene-viewer quick-look"
+        <model-viewer src="models/toyota_supra.glb" ar ar-modes="webxr scene-viewer quick-look"
             tone-mapping="neutral" poster="poster.webp" shadow-intensity="1.4" camera-orbit="-300deg 80deg 4m"
             min-camera-orbit="auto auto 4.911m" max-camera-orbit="auto 100deg 9m" min-field-of-view="12deg"
             ref="modelViewer">
