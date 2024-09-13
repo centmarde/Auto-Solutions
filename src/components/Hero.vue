@@ -1,7 +1,10 @@
 <template>
   <div>
 <Navbar/>
+
 <TopContents/>
+
+
   </div>
 </template>
 
@@ -10,6 +13,6 @@ import Navbar from '../includes/Navbar/Navbar.vue'
 import TopContents from '../includes/HeroSection/TopContents.vue'
 </script>
 
-<style lang="scss" scoped>
+<style>
 
 </style>
