@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <br /><br />
-    <div class="row">
-      <div class="col d-flex text-center">
+  <div id="yyts" class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+      <div class="card-body">
         <form
           id="login_form"
           @submit.prevent="login"
@@ -11,42 +10,43 @@
           <h1 class="login">Auto Solutions</h1>
           <h2 class="text-center">Login</h2>
 
-          <div class="form-floating">
-            <textarea
-              class="form-control mb-4"
-              placeholder="Leave a comment here"
+          <div class="form-floating mb-4">
+            <input
+              class="form-control"
               type="email"
+              placeholder="Email"
               v-model="email"
               required
-            ></textarea>
-            <label for="floatingTextarea"
-              ><i class="fa-solid fa-user"></i> Email
+            />
+            <label for="emailInput">
+              <i class="fa-solid fa-user"></i> Email
             </label>
           </div>
 
+          <div class="form-floating position-relative mb-4">
+            <input
+              :type="passwordType"
+              class="form-control"
+              placeholder="Password"
+              v-model="password"
+              @keydown.enter.prevent
+              required
+            />
+            <label for="passwordInput">
+              <i class="fa-solid fa-lock"></i> Password
+            </label>
+            <button
+              type="button"
+              @click="togglePassword"
+              class="password-toggle-button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+              </svg>
+            </button>
+          </div>
 
-          <div class="form-floating">
-  <textarea
-    class="form-control mb-4"
-    placeholder="Leave a comment here"
-    v-model="password"
-    @keydown.enter.prevent
-    required
-  ></textarea>
-  <label for="floatingTextarea">
-    <i class="fa-solid fa-lock"></i> Password
-  </label>
-  <button type="button" @click="togglePassword" id="togglePassword">
-    <i
-      :class="
-        passwordType === 'password' ? 'bi bi-eye-slash' : 'bi bi-eye'
-      "
-    ></i>
-  </button>
-</div>
-
-
-        
           <!-- Submit Button -->
           <div class="d-flex justify-content-center">
             <button
@@ -74,7 +74,7 @@
             </button>
           </div>
 
-          <div class="create-account">
+          <div class="create-account mt-3">
             <p>
               Create Account <router-link to="/register">Sign-up</router-link>
             </p>
@@ -85,7 +85,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router"; // Import Vue Router's useRouter
@@ -176,6 +175,9 @@ const login = async () => {
 </script>
 
 <style scoped>
+/* #yyts{
+  background-color: aliceblue;
+} */
 .container {
   max-width: 400px;
   margin: auto;
@@ -214,4 +216,21 @@ const login = async () => {
   margin-top: 1.5rem;
   font-size: 0.875rem;
 }
+
+.position-relative {
+  position: relative;
+}
+
+.password-toggle-button {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
 </style>
+
+

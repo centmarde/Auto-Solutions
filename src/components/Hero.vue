@@ -17,5 +17,5 @@ import Loader from './Loader.vue'
 </script>
 
 <style>
-/* You can add additional styles here if needed */
+
 </style>

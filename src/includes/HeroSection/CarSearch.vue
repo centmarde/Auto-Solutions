@@ -5,7 +5,7 @@
 
       <form @submit.prevent="submitForm">
         <div class="row">
-          <div class="col">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <!-- Brand Selection Dropdown -->
             <div class="mb-3">
               <label class="form-label" for="brand">Brand</label>
