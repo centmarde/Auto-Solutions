@@ -6,31 +6,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import gsap from 'gsap'
 
 const isLoading = ref(true)
 const loadingScreen = ref(null)
 
-// Check if the page needs to be reloaded
-const needsReload = ref(false)
-
 onMounted(() => {
-  if (sessionStorage.getItem('reloaded')) {
-    // Page has been reloaded, no need to reload again
-    sessionStorage.removeItem('reloaded')
-    setTimeout(() => {
-      isLoading.value = false
-    }, 3000) // 5 seconds
-  } else {
-    // Set flag to reload page and store it in sessionStorage
-    sessionStorage.setItem('reloaded', 'true')
-    window.location.reload()
-  }
+  // Simulate a delay for loading screen
+  setTimeout(() => {
+    isLoading.value = false
+  }, 3000) // Adjust time as needed
 })
-
-
 </script>
+
 
 <style>
 .loading-screen {

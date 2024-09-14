@@ -11,7 +11,7 @@
                 <img
                   src="../../assets/images/black-audi-car-png-17.png"
                   alt="Audi"
-                  style="width: 17rem"
+                  style="width: 14rem"
                 />
               </div>
               <div class="col">
@@ -36,7 +36,7 @@
                 <img
                   src="../../assets/images/Aqua g sports.png"
                   alt="Aqua G Sports"
-                  style="width: 17rem"
+                  style="width: 14rem"
                 />
               </div>
               <div class="col">
@@ -63,7 +63,7 @@
                 <img
                   src="../../assets/images/car1.png"
                   alt="Car Model 1"
-                  style="width: 19rem"
+                  style="width: 15rem"
                 />
               </div>
               <div class="col">
@@ -88,7 +88,7 @@
                 <img
                   src="../../assets/images/hq toyota.png"
                   alt="Toyota"
-                  style="width: 17rem"
+                  style="width: 14rem"
                 />
               </div>
               <div class="col">

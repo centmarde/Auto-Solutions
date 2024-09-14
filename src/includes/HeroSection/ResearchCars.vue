@@ -35,7 +35,7 @@
 @media (max-width: 800px) and (min-width: 350px) {
   #sts3 {
          top: 50%;
-         left: 25%;
+         left: 0%;
          margin-bottom: 2rem;
   }
 }
