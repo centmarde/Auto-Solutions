@@ -30,12 +30,12 @@
           </div>
         </div>
 
-            <p class="d-flex mt-2">Already have an account? <router-link to="/login" class="nav-link"><b>Log-in</b></router-link>
+            <p class="d-flex mt-2 apol">Already have an account? <router-link to="/login" class="nav-link"><b>Log-in</b></router-link>
             </p>
     </div>
       </div>
       <div class="col-12 col-lg-4 col-md-5 col-sm-12 d-flex justify-content-center">
-        <img  src="https://www.cars.com/images/garage-landing/garage-hero.webp" style="width: 20rem;" alt="ssed">
+        <img class="ssed" src="https://www.cars.com/images/garage-landing/garage-hero.webp" alt="ssed">
       </div>
     </div>
   </div>
@@ -117,6 +117,17 @@
 
   to {
     left: 100%;
+  }
+}
+.ssed{
+  width: 20rem;
+}
+@media(max-width: 360px) {
+  .apol{
+    font-size: 0.9rem;
+  }
+  .ssed{
+    width: 15rem;
   }
 }
 </style>
