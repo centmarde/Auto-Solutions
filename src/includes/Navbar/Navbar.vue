@@ -10,7 +10,7 @@
           class="logopic"
           height="50"
         />
-        <h3 id="gidor" class="ms-2 mb-0">Gidor's Auto Solutions</h3>
+        <h3 id="gidor" class="ms-2 mb-0">AUTO-SOLUTIONS</h3>
       </a>
 
       <!-- Hamburger Menu Button -->
@@ -25,27 +25,47 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Navbar Links -->
+      <!-- Navbar Links (moved to the left) -->
       <div
         class="collapse navbar-collapse"
         :class="{ show: isMenuVisible }"
         id="navbarNav"
       >
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav me-auto"> <!-- changed ms-auto to me-auto to move to the left -->
           <li class="nav-item">
-            <a href="#home" class="nav-link" @click="closeMenu">Home</a>
+            <a href="#CarSale" class="nav-link btn" @click="closeMenu">CARS FOR SALE</a>
+          </li>
+          <li class="nav-item text-center">
+            <div class="dropdown">
+  <button class="btn drp_btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    NEW CARS
+  </button>
+  <ul class="btn dropdown-menu">
+    <li><a class="dropdown-item text-light mt-2"><router-link to="/GTR" class="nav-link" @click="closeMenu">GTR</router-link></a></li>
+    <li><a class="dropdown-item text-light"><router-link to="/Nissan" class="nav-link" @click="closeMenu">NISSAN</router-link></a></li>
+    <li><a class="dropdown-item text-light"><router-link to="/Supra" class="nav-link" @click="closeMenu">SUPRA</router-link></a></li>
+  </ul>
+</div>
           </li>
           <li class="nav-item">
-            <a href="#menu" class="nav-link" @click="closeMenu">Menu</a>
+            <a href="#sellcar23" class="nav-link btn" @click="closeMenu">SELL YOUR CAR</a>
           </li>
           <li class="nav-item">
-            <a href="#stack" class="nav-link" @click="closeMenu">About Us</a>
+            <a href="#stack" class="nav-link btn" @click="closeMenu">REVIEWS</a>
           </li>
-          <li class="nav-item me-5">
-            <router-link to="/login" class="nav-link" @click="closeMenu">Log-in</router-link>
+         
+          <li class="nav-item">
+            <a class="nav-link btn"><router-link to="/login" style="text-decoration: none;">RENT A CAR</router-link></a>
           </li>
-          <!-- Theme Toggle Switch -->
-          <li class="nav-item d-flex align-items-center">
+        </ul>
+
+        <!-- Separate Login and Theme Toggle on the right -->
+        <ul class="navbar-nav ms-auto d-flex align-items-center">
+          <li class="nav-item d-flex">
+            <router-link to="/login" class="nav-link btn" @click="closeMenu">LOGIN</router-link>
+            <i class="fa fa-user-circle ms-1 mt-2" aria-hidden="true"></i>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-3">
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" id="themeSwitch" :checked="theme === 'light'" @change="toggleTheme">
               <label class="form-check-label" for="themeSwitch">
@@ -61,7 +81,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-
 
 const isMenuVisible = ref(false);
 const theme = ref(localStorage.getItem('theme') || 'dark'); // Load saved theme or default to dark
@@ -92,7 +111,8 @@ onMounted(() => {
 }
 
 #gidor {
-  font-size: 1.5rem; /* Default font size */
+  font-size: 1.2rem;
+  font-family: "Merriweather", serif; 
 }
 
 @media (max-width: 992px) { /* Large tablets and small desktops */
@@ -119,5 +139,39 @@ onMounted(() => {
   #gidor {
     font-size: 0.6rem; /* Adjust title size for mobile */
   }
+}
+
+/* From Uiverse.io by biswacpcode */
+.btn {
+ 
+  text-decoration: none;
+  font-size: 10px;
+  border: none;
+  background: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn::before {
+  margin-left: auto;
+}
+
+.btn::after,
+.btn::before {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: rgba(255, 0, 0, 0.5);
+  display: block;
+  transition: 0.5s;
+}
+
+.btn:hover::after,
+.btn:hover::before {
+  width: 100%;
+}
+
+.drp_btn{
+  margin-top: 2px;
 }
 </style>

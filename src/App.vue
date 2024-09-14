@@ -9,5 +9,7 @@
 </script>
 
 <style scoped>
-
+*{
+    overflow: hidden;
+}
 </style>
