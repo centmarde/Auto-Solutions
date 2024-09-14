@@ -42,7 +42,21 @@
               </select>
             </div>
 
-            
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Description</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                :placeholder="
+                  selectedCar
+                    ? selectedCar.Description
+                    : 'Car Description'
+                "
+              ></textarea>
+            </div>
           </div>
 
           <div class="col">
@@ -263,5 +277,9 @@ export default {
   to {
     left: 100%;
   }
+}
+#CarSale{
+  overflow: hidden;
+  padding: 1rem;
 }
 </style>

@@ -48,16 +48,14 @@
 </div>
           </li>
           <li class="nav-item">
-            <a href="#stack" class="nav-link btn" @click="closeMenu">SELL YOUR CAR</a>
+            <a href="#sellcar23" class="nav-link btn" @click="closeMenu">SELL YOUR CAR</a>
           </li>
           <li class="nav-item">
             <a href="#stack" class="nav-link btn" @click="closeMenu">REVIEWS</a>
           </li>
+         
           <li class="nav-item">
-            <a href="#stack" class="nav-link btn" @click="closeMenu">FINANCING</a>
-          </li>
-          <li class="nav-item">
-            <a href="#stack" class="nav-link btn" @click="closeMenu">CAR RENTAL</a>
+            <a class="nav-link btn"><router-link to="/login" style="text-decoration: none;">RENT A CAR</router-link></a>
           </li>
         </ul>
 
