@@ -5,6 +5,8 @@
         <div class="animation"></div>
       
       </section>
+      <h1 id="dino">Auto-Sulotions</h1>
+     
       <section class="gradient"></section>
       
       <div class="end-lottie" style="display: none;"></div> <!-- Moved end-lottie here -->
@@ -168,5 +170,30 @@ function LottieScrollTrigger(vars) {
 
 .logo-container{
   padding: 2rem;
+}
+
+#dino {
+  color: #EEEEEE;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  z-index: 888;
+  transform: translate(-50%, -50%);
+  font-family: "Merriweather", serif;
+  font-size: 5rem;
+}
+@media (max-width: 1300px) and (min-width: 576px) {
+  #dino {
+    font-size: 6.5vw;
+    top: 50%; 
+  }
+}
+
+
+@media (max-width: 576px) {
+  #dino {
+    font-size: 6vw;
+    top: 45%; 
+  }
 }
 </style>

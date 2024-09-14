@@ -55,7 +55,7 @@
           </li>
          
           <li class="nav-item">
-            <a class="nav-link btn"><router-link to="/login" style="text-decoration: none;">RENT A CAR</router-link></a>
+            <a class="nav-link btn"><router-link to="/login" style="text-decoration: none; color:rgb(97, 40, 255);">RENT A CAR</router-link></a>
           </li>
         </ul>
 
@@ -161,7 +161,7 @@ onMounted(() => {
   content: '';
   width: 0%;
   height: 2px;
-  background: rgba(255, 0, 0, 0.5);
+  background: rgb(97, 40, 255);
   display: block;
   transition: 0.5s;
 }

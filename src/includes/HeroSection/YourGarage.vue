@@ -56,7 +56,7 @@
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
   padding-block: 0.5rem;
   padding-inline: 1.25rem;
-  background-color: rgb(0 107 179);
+  background-color: rgb(97, 40, 255);
   border-radius: 9999px;
   display: flex;
   align-items: center;

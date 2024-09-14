@@ -39,7 +39,7 @@
 }
 
 .nav-link.is-active {
-  color: #C73659; /* Example active color */
+  color:rgb(97, 40, 255); /* Example active color */
   text-transform: uppercase;
 }
 

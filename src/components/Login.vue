@@ -1,47 +1,104 @@
 <template>
   <div>
-    <br><br>
-    <form id="login_form" @submit.prevent="login" class="container wrap-form text-center">
-      <h1 class="login">Auto Solutions</h1>
-      <h2 class="text-center">Login</h2>
-      <div class="input-box">
-        <input v-model="email" type="email" placeholder="Email" required />
-        <i class="fa-solid fa-user"></i>
+    <br /><br />
+    <div class="row">
+      <div class="col d-flex text-center">
+        <form
+          id="login_form"
+          @submit.prevent="login"
+          class="container wrap-form text-center"
+        >
+          <h1 class="login">Auto Solutions</h1>
+          <h2 class="text-center">Login</h2>
+
+          <div class="form-floating">
+            <textarea
+              class="form-control mb-4"
+              placeholder="Leave a comment here"
+              type="email"
+              v-model="email"
+              required
+            ></textarea>
+            <label for="floatingTextarea"
+              ><i class="fa-solid fa-user"></i> Email
+            </label>
+          </div>
+
+
+          <div class="form-floating">
+  <textarea
+    class="form-control mb-4"
+    placeholder="Leave a comment here"
+    v-model="password"
+    @keydown.enter.prevent
+    required
+  ></textarea>
+  <label for="floatingTextarea">
+    <i class="fa-solid fa-lock"></i> Password
+  </label>
+  <button type="button" @click="togglePassword" id="togglePassword">
+    <i
+      :class="
+        passwordType === 'password' ? 'bi bi-eye-slash' : 'bi bi-eye'
+      "
+    ></i>
+  </button>
+</div>
+
+
+        
+          <!-- Submit Button -->
+          <div class="d-flex justify-content-center">
+            <button
+              type="submit"
+              id="login_button"
+              class="sski btn btn-primary"
+              style="background-color: rgb(97, 40, 255); border-color: rgb(97, 40, 255);"
+              :disabled="isSubmitting"
+            >
+              <span v-if="isSubmitting">
+                <div
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+                ></div>
+                <span>Loading...</span>
+              </span>
+              <span v-else>Login</span>
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="create-account">
+            <p>
+              Create Account <router-link to="/register">Sign-up</router-link>
+            </p>
+            <router-link to="/">Go-Back</router-link>
+          </div>
+        </form>
       </div>
-      <div class="input-box">
-        <input
-          :type="passwordType"
-          v-model="password"
-          placeholder="Password"
-          required
-        />
-        <i class="fa-solid fa-lock"></i>
-        <button type="button" @click="togglePassword" id="togglePassword">
-          <i :class="passwordType === 'password' ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-        </button>
-      </div>
-      <button type="submit" id="login_button" class="btn btn-primary">Login</button>
-      <div class="create-account">
-        <p>Create Account <router-link to="/register">Sign-up</router-link></p>
-        <router-link to="/">Go-Back</router-link>
-      </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // Import Vue Router's useRouter
-import { supabase } from '../lib/supaBase';
-import axios from 'axios';
+import { ref } from "vue";
+import { useRouter } from "vue-router"; // Import Vue Router's useRouter
+import { supabase } from "../lib/supaBase";
+import axios from "axios";
 
-const email = ref('');
-const password = ref('');
-const passwordType = ref('password');
+const email = ref("");
+const password = ref("");
+const passwordType = ref("password");
 const router = useRouter(); // Get router instance
 
 const togglePassword = () => {
-  passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
+  passwordType.value = passwordType.value === "password" ? "text" : "password";
 };
 
 const login = async () => {
@@ -78,7 +135,7 @@ const login = async () => {
 
       // Redirect to home page after successful login
       alert("Login Successfully");
-      router.push('/Home'); 
+      router.push("/Home");
     } else {
       alert(`Profile fetch error: ${error.message}`);
     }
@@ -87,9 +144,9 @@ const login = async () => {
     console.log("Supabase login failed, trying Axios");
 
     try {
-      const response = await axios.post('http://localhost:3001/login', {
+      const response = await axios.post("http://localhost:3001/login", {
         email: email.value,
-        password: password.value
+        password: password.value,
       });
 
       if (response.data && response.data.success) {
@@ -98,17 +155,17 @@ const login = async () => {
         localStorage.setItem("axios_id", response.data.user_id);
         console.log("Axios user_id:", response.data.id);
 
-
-
         // Redirect to home page after successful login
         alert("Login Successfully");
-        router.push('/Home'); 
+        router.push("/Home");
       } else {
         alert("Invalid login credentials. Please try again.");
       }
     } catch (axiosError) {
       console.error("Axios login failed", axiosError);
-      alert("Error: Unable to login. Please check your credentials or try again later.");
+      alert(
+        "Error: Unable to login. Please check your credentials or try again later."
+      );
     }
   }
 
@@ -117,7 +174,6 @@ const login = async () => {
   loginButton.innerHTML = "Login";
 };
 </script>
-
 
 <style scoped>
 .container {
