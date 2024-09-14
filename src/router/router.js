@@ -10,7 +10,6 @@ import Home from '../components/includes/Home.vue';
 import CarRepair from '../includes/HomeSection/CarRepair.vue'
 import CarParts from '../includes/HomeSection/CarParts.vue'
 import CarRental from '../includes/HomeSection/CarRental.vue';
-import CarOwned from '../components/includes/CarOwned.vue';
 import UserInfo from '../components/includes/UserInfo.vue';
 import Supra from '../components/includes/Supra.vue';
 import GTR from '../components/includes/Gtr.vue';
@@ -21,16 +20,17 @@ const routes = [
   { path: '/', component: Hero },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
+  { path: '/Supra', component: Supra },
+  { path: '/GTR', component: GTR},
+  { path: '/Nissan', component: Nissan },
   /* { path: '/UserLanding', component: UserLanding, meta: { requiresAuth: true } }, */
   { path: '/Home', component: Home, meta: { requiresAuth: true } },
   { path: '/CarRepair', component: CarRepair, meta: { requiresAuth: true } },
   { path: '/CarParts', component: CarParts, meta: { requiresAuth: true } },
   { path: '/CarRental', component: CarRental, meta: { requiresAuth: true } },
-  { path: '/CarOwned', component: CarOwned, meta: { requiresAuth: true } },
+  // { path: '/CarOwned', component: CarOwned, meta: { requiresAuth: true } },
   { path: '/UserInfo', component: UserInfo, meta: { requiresAuth: true } },
-  { path: '/Supra', component: Supra, meta: { requiresAuth: true } },
-  { path: '/GTR', component: GTR, meta: { requiresAuth: true } },
-  { path: '/Nissan', component: Nissan, meta: { requiresAuth: true } },
+
 
 
 
@@ -54,14 +54,14 @@ router.beforeEach((to, from, next) => {
   const userRole = localStorage.getItem("Role");
 
   // Pages that don't require authentication
-  const publicPages = ['/', '/login', '/register'];
+  const publicPages = ['/', '/login', '/register', '/Supra', '/GTR', '/Nissan'];
 
   // Pages that require authentication
-  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/home', '/CarOwned', '/UserInfo', '/Supra', '/GTR', '/Nissan'];
+  const protectedPages = ['/UserLanding', '/CarRental', '/CarRepair', '/CarRental', '/CarParts', '/Home', '/UserInfo'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
-    return next('/login');
+    return next('/');
   }
 
   // Redirect to home if already logged in and trying to access public pages
