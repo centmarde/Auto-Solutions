@@ -2,12 +2,11 @@
   <header class="navbar navbar-expand-lg fixed-top"
     :class="{ 'navbar-dark': theme === 'dark', 'navbar-light': theme === 'light' }"
     :style="{ backgroundColor: theme === 'dark' ? 'rgba(52, 52, 52, 0.8)' : 'rgba(200, 200, 200, 0.8)', color: theme === 'light' ? '#333' : '#fff' }">
-
     <div class="container-fluid">
       <!-- Logo and Title Section -->
       <a class="navbar-brand d-flex align-items-center" href="#">
         <img src="@/assets/images/logo.jpeg" alt="logo" class="logopic" height="50" />
-        <h3 id="gidor" class="ms-2 mb-0">Gidor's Auto Solutions</h3>
+        <h3 id="gidor" class="ms-2 mb-0">Auto Solutions</h3>
       </a>
 
       <!-- Hamburger Menu Button -->
@@ -18,23 +17,21 @@
 
       <!-- Navbar Links -->
       <div class="collapse navbar-collapse" :class="{ show: isMenuVisible }" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <button class="btn"> <router-link to="/UserInfo" class="nav-link">{{ username }}</router-link></button>
+        <div class="ms-auto d-flex align-items-center justify-content-end w-100">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">SERVICES</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/" class="nav-link btn wes" @click="handleLogout">LOGOUT</router-link>
+            </li>
+          </ul>
 
-          </li>
-          <li class="nav-item">
-            <button class="btn"> <router-link to="/Supra" class="nav-link"
-                @click="closeMenu">SERVICES</router-link></button>
-
-          </li>
-          <li class="nav-item me-5">
-            <button class="btn"> <router-link to="/" class="nav-link"
-                @click="handleLogout">LOGOUT</router-link></button>
-
-          </li>
-          <!-- Theme Toggle Switch -->
-          <li class="nav-item d-flex align-items-center">
+          <!-- Theme Toggle -->
+          <div class="d-flex align-items-center ms-3">
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" id="themeSwitch" :checked="theme === 'light'"
                 @change="toggleTheme">
@@ -42,24 +39,25 @@
                 <i :class="theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon'"></i>
               </label>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Mobile Navigation Links (only shown on mobile) -->
+    <!-- Mobile Navigation Links -->
     <div class="nav-links-mobile" v-show="isMenuVisible">
-      <router-link to="/Supra" class="nav-link" @click="closeMenu">SERVICES</router-link>
-      <router-link to="/" class="nav-link" @click="handleLogout">LOGOUT</router-link>
+      <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
+      <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">SERVICES</router-link>
+      <router-link to="/" class="nav-link btn wes" @click="handleLogout">LOGOUT</router-link>
     </div>
   </header>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { supabase, doLogout as supabaseLogout } from '../../../lib/supaBase';
-
 
 // State
 const isMenuVisible = ref(false);
@@ -72,10 +70,6 @@ const router = useRouter();
 // Methods
 const closeMenu = () => {
   isMenuVisible.value = false;
-};
-
-const gotoUserInfo = () => {
-  router.push("/UserInfo");
 };
 
 const toggleMenu = () => {
@@ -132,118 +126,46 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.logo {
-  gap: 10px;
-}
-
 .logopic {
   border-radius: 30px;
-  height: 50px;
-}
-
-/* Dark mode styles */
-/* Dark mode styles */
-header.navbar-dark .nav-link {
-  color: white;
-  text-transform: uppercase;
-}
-
-/* Light mode styles */
-header.navbar-light .nav-link {
-  color: #333;
-  text-transform: uppercase;
-}
-
-
-
-.hamburger {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-}
-
-.bar {
-  width: 30px;
-  height: 3px;
-  background-color: white;
-  transition: 0.3s;
-}
-
-.bar.open:nth-child(1) {
-  transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.bar.open:nth-child(2) {
-  opacity: 0;
-}
-
-.bar.open:nth-child(3) {
-  transform: rotate(45deg) translate(-5px, -6px);
-}
-
-.nav-links {
-  gap: 20px;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-}
-
-
-
-.nav-links-mobile {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 10px;
-  background-color: rgba(82, 52, 52, 0.7);
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-}
-
-.nav-links-mobile a {
-  display: block;
-  padding: 10px;
-  color: white;
-  text-decoration: none;
-}
-
-.nav-links-mobile a:hover {
-  background-color: rgba(141, 40, 40, 0.25);
-}
-
-/* Show mobile menu when visible */
-.nav-links-mobile[v-show="true"] {
-  display: block;
+  max-width: 100px; /* Ensures logo doesn't grow too large */
 }
 
 #gidor {
-  font-size: 1.5rem;
-  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-family: "Merriweather", serif; 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) { /* Large tablets and small desktops */
   #gidor {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) { /* Tablets */
+  .logopic {
+    height: 40px; /* Smaller logo for smaller screens */
+  }
+
   #gidor {
-    font-size: 1rem;
+    font-size: 1rem; /* Smaller title for smaller screens */
+  }
+}
+
+@media (max-width: 280px) { /* Mobile devices */
+  .logopic {
+    height: 30px; /* Even smaller logo for mobile */
+  }
+
+  #gidor {
+    font-size: 0.6rem; /* Adjust title size for mobile */
   }
 }
 
 /* From Uiverse.io by biswacpcode */
 .btn {
-  color: #151515;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 10px;
   border: none;
   background: none;
   font-weight: 600;
@@ -259,7 +181,7 @@ header.navbar-light .nav-link {
   content: '';
   width: 0%;
   height: 2px;
-  background: rgba(255, 0, 0, 0.5);
+  background: rgb(97, 40, 255);
   display: block;
   transition: 0.5s;
 }
@@ -267,5 +189,14 @@ header.navbar-light .nav-link {
 .btn:hover::after,
 .btn:hover::before {
   width: 100%;
+}
+
+.nav-link {
+  color: white;
+  text-transform: uppercase;
+}
+
+header.navbar-light .nav-link {
+  color: #333;
 }
 </style>

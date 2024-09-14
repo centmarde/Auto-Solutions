@@ -1,7 +1,7 @@
 <template>
   <div class="card mx-4 mb-5" style="padding: 2rem;">
     <div class="row">
-      <div class="col-8">
+      <div class="col-12 col-sm-12 col-lg-8 col-md-8">
         <div class="card-body"><h3 id="ttrs">YOUR GARAGE</h3>
         <br>
         <h5>Add your car. Track its value.</h5>
@@ -56,7 +56,7 @@
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
   padding-block: 0.5rem;
   padding-inline: 1.25rem;
-  background-color: rgb(0 107 179);
+  background-color: rgb(97, 40, 255);
   border-radius: 9999px;
   display: flex;
   align-items: center;
