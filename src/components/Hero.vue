@@ -1,11 +1,10 @@
 <template>
   <div>
-<Navbar/>
-
-<TopContents/>
-<MidContents/>
-<Footer/>
-
+    <Loader />
+    <Navbar/>
+    <TopContents/>
+    <MidContents/>
+    <Footer/>
   </div>
 </template>
 
@@ -14,7 +13,7 @@ import Navbar from '../includes/Navbar/Navbar.vue'
 import TopContents from '../includes/HeroSection/TopContents.vue'
 import MidContents from '../includes/HeroSection/MidContents.vue'
 import Footer from '../includes/HeroSection/Footer.vue'
-
+import Loader from './Loader.vue'
 </script>
 
 <style>
