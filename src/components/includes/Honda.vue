@@ -210,7 +210,7 @@ export default {
         const carModel = modelViewer.model;
         const material = carModel?.materials?.[7]; // Ensure materials exist
         if (material) {
-            material.pbrMetallicRoughness.setBaseColorFactor([0.51, 0.65, 0.48]); // Set the color to #c43a30
+            material.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1]); // Set the color to #c43a30
         }
     });
 }
@@ -242,7 +242,7 @@ export default {
     bottom: 0;
     width: 100%;
     height: 100vh;
-    background: radial-gradient(circle, #ffffff, #82a57b);
+    background: radial-gradient(circle, #ffffff, #151515);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 0;
     padding: 0;

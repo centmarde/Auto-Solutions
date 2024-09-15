@@ -1,84 +1,124 @@
 <template>
-   <section id="sellcar23">
+  <section id="sellcar23">
     <div id="xrt23" class="card-body">
-       <div class="row">
-            <div class="col-12 col-lg-7 col-md-6 col-sm-5"><h3 id="title">SELL YOUR CAR
-            </h3>
-            <div class="d-flex"> <img class="erd3 me-2" src="https://www.cars.com/images/sell/explore-ready-go.png"  alt="">
-                <span>Get an offer online and quickly complete the transaction with a local dealer.</span></div>
-           
-    <hr>
-    <div class="d-flex"> <img class="erd3 me-2" src="https://www.cars.com/images/sell/explore-enter-details.png"  alt="">
-        <span>List your car for free. Set your own price and easily showcase your car on Auto-Solutions.</span></div>
-    
-           </div>
-            <div class="col-12 col-lg-5 col-md-6 col-sm-5">
-                    <div id="sts4" style="top: 20%; right: 10%; position: relative;"> <img src="https://www.cars.com/images/sell/sale-dealer-woman-brand-colors.png" style="width: 15rem;"></div>
-                   
-            </div>
-       </div>
-    </div>
+      <div class="row">
+        <div class="col-12 col-lg-7 col-md-6 col-sm-5">
+          <h3 id="title">SELL YOUR CAR</h3>
+          <div class="d-flex">
+            <img
+              class="erd3 me-2"
+              src="https://www.cars.com/images/sell/explore-ready-go.png"
+              alt=""
+            />
+            <span>
+              Get an offer online and quickly complete the transaction with a local dealer.
+            </span>
+          </div>
 
-    <div class="row">
-          <div class="col d-flex justify-content-center my-2">
-            <!-- Submit Button -->
-            <button type="submit" class="btnn32" :disabled="isSubmitting">
-              <span v-if="isSubmitting">
-                <div
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-                ></div>
-                <span>Loading...</span>
-              </span>
-              <span v-else><router-link to="/Register" class="nav-link">Get-Started</router-link></span>
-              <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  fill-rule="evenodd"
-                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
+          <hr />
+          <div class="d-flex">
+            <img
+              class="erd3 me-2"
+              src="https://www.cars.com/images/sell/explore-enter-details.png"
+              alt=""
+            />
+            <span>
+              List your car for free. Set your own price and easily showcase your car on Auto-Solutions.
+            </span>
           </div>
         </div>
 
-   </section>
-    
+        <div class="col-12 col-lg-5 col-md-6 col-sm-5">
+          <div id="sts4" style="top: 20%; right: 10%; position: relative;">
+            <img
+              src="https://www.cars.com/images/sell/sale-dealer-woman-brand-colors.png"
+              style="width: 15rem;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center my-2">
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btnn32"
+          :disabled="isSubmitting"
+          @click="handleSubmit"
+        >
+          <span v-if="isSubmitting">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            <span>Loading...</span>
+          </span>
+          <span v-else>Get-Started</span>
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      isSubmitting: false,
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      this.isSubmitting = true;
+
+      // Simulate a delay for the form submission (e.g., API call)
+      setTimeout(() => {
+        this.isSubmitting = false;
+        this.$router.push("/Register"); // Redirect after form submission
+      }, 2000);
+    },
+  },
+};
+</script>
+
 <style>
-#xrt23{
-overflow: hidden;
+#xrt23 {
+  overflow: hidden;
 }
-#title{
-    font-family: "Merriweather", serif;
+#title {
+  font-family: "Merriweather", serif;
 }
 
 @media (max-width: 800px) and (min-width: 350px) {
-#sts4 {
-     top: 50%;
-     left: 0%;
-     margin-bottom: 2rem;
+  #sts4 {
+    top: 50%;
+    left: 0%;
+    margin-bottom: 2rem;
+  }
 }
-}
-.erd3{
-        width: 5rem;
+.erd3 {
+  width: 4.5rem;
 }
 @media (max-width: 999px) and (min-width: 350px) {
-.erd3 {
+  .erd3 {
     width: 3rem;
     height: 3rem;
-}
+  }
 }
 
-/* From Uiverse.io by satyamchaudharydev */
-.btnn32{
+.btnn32 {
   position: relative;
   transition: all 0.3s ease-in-out;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
   padding-block: 0.5rem;
   padding-inline: 1.25rem;
-  background-color:rgb(97, 40, 255);
+  background-color: rgb(97, 40, 255);
   border-radius: 9999px;
   display: flex;
   align-items: center;
