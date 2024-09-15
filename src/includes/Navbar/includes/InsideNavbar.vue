@@ -23,7 +23,7 @@
               <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">SERVICES</router-link>
+              <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">GARAGE</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/" class="nav-link btn wes" @click="handleLogout">LOGOUT</router-link>

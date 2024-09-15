@@ -37,14 +37,7 @@
           </li>
           <li class="nav-item text-center">
             <div class="dropdown">
-  <button class="btn drp_btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    NEW CARS
-  </button>
-  <ul class="btn dropdown-menu">
-    <li><a class="dropdown-item text-light mt-2"><router-link to="/GTR" class="nav-link" @click="closeMenu">GTR</router-link></a></li>
-    <li><a class="dropdown-item text-light"><router-link to="/Nissan" class="nav-link" @click="closeMenu">NISSAN</router-link></a></li>
-    <li><a class="dropdown-item text-light"><router-link to="/Supra" class="nav-link" @click="closeMenu">SUPRA</router-link></a></li>
-  </ul>
+ 
 </div>
           </li>
           <li class="nav-item">

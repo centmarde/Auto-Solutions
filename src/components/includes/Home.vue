@@ -1,65 +1,16 @@
 <template>
     <Nav />
-    <br><br> <br><br><br>
+    <br><br><br>
+    <FeaturedCar/>
     
-   <!--  <div class="container">
-      <div class="row">
-        <div class="col d-flex justify-content-center">
-         
-          <button
-            type="button"
-            id="carparts_button"
-            class="btn btn-primary ms-5"
-            @click="gotoCarOwned"
-          >
-            Cars Owned
-          </button>
-
-          <button
-            type="button"
-            id="carparts_button"
-            class="btn btn-primary ms-5"
-            @click="gotoCarParts"
-          >
-            Car Parts
-          </button>
-  
-          <button
-            type="button"
-            id="carrepair_button"
-            class="btn btn-primary ms-5"
-            @click="goToCarRepair"
-          >
-            Car Repair
-          </button>
-  
-          <button
-            type="button"
-            id="carrental_button"
-            class="btn btn-primary ms-5"
-            @click="gotoCarRental"
-          >
-            Car Rental
-          </button>
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col d-flex justify-content-center"> <button
-            type="button"
-            id="carrental_button"
-            class="btn btn-primary ms-5"
-            @click="gotoUserInfo"
-          >
-            User Info
-          </button></div>
-      </div>
-    </div> -->
   </template>
   
   <script setup>
   import { useRouter } from 'vue-router';
   import { doLogout } from "../../lib/supaBase";
   import Nav from '../../includes/Navbar/includes/InsideNavbar.vue';
+  import FeaturedCar from '../../includes/HomeSection/FeaturedCar.vue';
+
   
   //enable this for remove auth
   // localStorage.removeItem("access_token");
