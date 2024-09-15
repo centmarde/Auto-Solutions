@@ -46,8 +46,8 @@
                             MENU
                         </button>
                         <ul class="dropdown-menu">
-                            <li><router-link to="/Home" class="dropdown-item" @click="closeMenu">HOME</router-link></li>
-                            <li><router-link to="/Home" class="dropdown-item" @click="closeMenu">Menu2</router-link>
+                            <li><router-link to="/Honda" class="dropdown-item" @click="closeMenu">2024 HONDA CIVIC</router-link></li>
+                            <li><router-link to="/Nissan" class="dropdown-item" @click="closeMenu">2024 NISSAN Z PERFORMANCE</router-link>
                             </li>
                         </ul>
 
