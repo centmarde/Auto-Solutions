@@ -39,15 +39,15 @@
                 <div class="row">
                     <div class="col">
                         <button class="custom-button ms-1 mt-3" @click="BodyButton">
-                            <router-link to="/Home" class="nav-link" @click="closeMenu">HOME</router-link>
+                            <router-link to="/Home" class="nav-link" >HOME</router-link>
                         </button>
                         <button class="custom-drpdown ms-1 mt-3 dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             MENU
                         </button>
                         <ul class="dropdown-menu">
-                            <li><router-link to="/Honda" class="dropdown-item" @click="closeMenu">2024 HONDA CIVIC</router-link></li>
-                            <li><router-link to="/Nissan" class="dropdown-item" @click="closeMenu">2024 NISSAN Z PERFORMANCE</router-link>
+                            <li><router-link to="/Honda" class="dropdown-item" >2024 HONDA CIVIC</router-link></li>
+                            <li><router-link to="/Nissan" class="dropdown-item" >2024 NISSAN Z PERFORMANCE</router-link>
                             </li>
                         </ul>
 

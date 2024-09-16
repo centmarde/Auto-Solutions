@@ -10,7 +10,7 @@ import UserInfo from '../components/includes/UserInfo.vue';
 import Supra from '../components/includes/Supra.vue';
 import Honda from '../components/includes/Honda.vue';
 import Nissan from '../components/includes/Nissan.vue';
-
+import SellContents from '../includes/HomeSection/SellContents.vue';
 
 const routes = [
   { path: '/', component: Hero },
@@ -21,6 +21,8 @@ const routes = [
   { path: '/Nissan', component: Nissan, meta: { requiresAuth: true } },
   { path: '/Home', component: Home, meta: { requiresAuth: true } },
   { path: '/UserInfo', component: UserInfo, meta: { requiresAuth: true } },
+  { path: '/SellContents', component: SellContents, meta: { requiresAuth: true } },
+
 
 
 
@@ -48,7 +50,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/', '/login', '/register'];
 
   // Pages that require authentication
-  const protectedPages = ['/UserLanding', '/Home', '/UserInfo', '/Supra', '/Honda', '/Nissan'];
+  const protectedPages = ['/UserLanding', '/Home', '/UserInfo', '/Supra', '/Honda', '/Nissan', '/SellContents'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
