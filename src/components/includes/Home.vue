@@ -1,42 +1,26 @@
 <template>
     <Nav />
+    <br><br> <br><br>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-6 col-md-6 col-sm-12"><div class="card shadow-lg">
+          <div class="card-body"><SellCar/></div>
+        </div></div>
+      </div>
+    </div>
+    
     <br><br><br>
     <FeaturedCar/>
     
   </template>
   
   <script setup>
-  import { useRouter } from 'vue-router';
   import { doLogout } from "../../lib/supaBase";
   import Nav from '../../includes/Navbar/includes/InsideNavbar.vue';
   import FeaturedCar from '../../includes/HomeSection/FeaturedCar.vue';
+  import SellCar from '../../includes/HeroSection/SellCar.vue';
 
   
-  //enable this for remove auth
-  // localStorage.removeItem("access_token");
-
-  
-  // Using Vue Router's push method for navigation
-  const router = useRouter();
-  
-  const goToCarRepair = () => {
-    router.push("/CarRepair");
-  };
-  
-  const gotoCarParts = () => {
-    router.push("/CarParts");
-  };
-  
-  const gotoCarRental = () => {
-    router.push("/CarRental");
-  };
-
-  const gotoCarOwned = () => {
-    router.push("/CarOwned");
-  };
-  const gotoUserInfo = () => {
-    router.push("/UserInfo");
-  };
   
   const logout = async () => {
     await doLogout();
