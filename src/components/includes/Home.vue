@@ -3,6 +3,12 @@
     <br><br><br><br>
     <div class="container">
       <div class="row">
+        <div class="col"> <CarsForSale/></div>
+      </div>
+    </div>
+   
+    <div class="container">
+      <div class="row">
         <div class="col-12 col-lg-6 col-md-6 col-sm-12"><div class="card shadow-lg">
           <div class="card-body"><SellCar/></div>
         </div></div>
@@ -20,6 +26,7 @@
   import FeaturedCar from '../../includes/HomeSection/FeaturedCar.vue';
   import SellCar from '../../includes/HeroSection/SellCar.vue';
   import HeroHome from "../../includes/HomeSection/HeroHome.vue";
+  import CarsForSale from "../../includes/HomeSection/CarsForSale.vue";
 
   
   
