@@ -53,77 +53,129 @@
   </header>
 </template>
 
+<script>
+import axios from 'axios';
+import { supabase } from '../../../lib/supabase'; // Import the configured Supabase client
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { supabase, doLogout as supabaseLogout } from '../../../lib/supaBase';
+export default {
+    data() {
+        return {
+            car: {
+                brand: '',
+                model: '',
+                year: null,
+                mileage: null,
+                price: null,
+                description: '',
+                engine: '',
+                horsepower: '',
+                torque: '',
+                topSpeed: '',
+                transmission: '',
+                yearsowned: '',
+            },
+            carData: [],
+            makesData: [],
+            suggestedBrands: [],
+            suggestedModels: [],
+            imagePreview: null,
+        };
+    },
+    methods: {
+        async fetchCarData() {
+            try {
+                const response1 = await axios.get("https://raw.githubusercontent.com/centmarde/api/main/allcars.json");
+                this.carData = response1.data;
 
-// State
-const isMenuVisible = ref(false);
-const username = ref('');
-const theme = ref(localStorage.getItem('theme') || 'dark'); // Load saved theme or default to dark
+                const response2 = await axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json");
+                this.makesData = response2.data.Results.map(item => item.MakeName); 
+            } catch (error) {
+                console.error("Error fetching car data:", error);
+            }
+        },
+        async fetchModelsForMake(make) {
+            try {
+                const response = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${make}?format=json`);
+                this.suggestedModels = response.data.Results.map(model => model.Model_Name);
+            } catch (error) {
+                console.error(`Error fetching models for make ${make}:`, error);
+            }
+        },
+        filterBrands() {
+            const inputBrand = this.car.brand.toLowerCase();
+            this.suggestedBrands = this.makesData
+                .filter(brand => brand.toLowerCase().includes(inputBrand));
+        },
+        async selectBrand(brand) {
+            this.car.brand = brand;
+            this.suggestedBrands = [];
+            await this.fetchModelsForMake(brand);
+        },
+        filterModels() {
+            const inputModel = this.car.model.toLowerCase();
+            this.suggestedModels = this.suggestedModels
+                .filter(model => model.toLowerCase().includes(inputModel));
+        },
+        selectModel(model) {
+            this.car.model = model;
+            this.suggestedModels = [];
+        },
+        onImageChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.imagePreview = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        async submitCarDetails() {
+            if (!this.car.model || !this.car.brand || !this.car.price) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            const userId = localStorage.getItem('user_id');
+            // Prepare the data to be inserted
+            const carDetails = {
+                brand: this.car.brand,
+                model: this.car.model,
+                year: this.car.year,
+                mileage: this.car.mileage,
+                price: this.car.price,
+                description: this.car.description,
+                engine: this.car.engine,
+                horsepower: this.car.horsepower,
+                torque: this.car.torque,
+                topSpeed: this.car.topSpeed,
+                transmission: this.car.transmission,
+                yearsowned: this.car.yearsowned,
+                forSale: true, // or false based on your requirement
+                forRent: false, // or true based on your requirement
+                user_id: userId // Include user_id in the data
+            };
 
-// Router
-const router = useRouter();
+            try {
+                const { data, error } = await supabase
+                    .from('Car')
+                    .insert([carDetails]);
 
-// Methods
-const closeMenu = () => {
-  isMenuVisible.value = false;
+                if (error) throw error;
+
+                console.log('Car Details Submitted:', data);
+                alert('Car details submitted successfully!');
+            } catch (error) {
+                console.error('Error submitting car details:', error);
+                alert('Failed to submit car details.');
+            }
+        },
+    },
+    mounted() {
+        this.fetchCarData();
+    },
 };
-
-const toggleMenu = () => {
-  isMenuVisible.value = !isMenuVisible.value;
-};
-
-const handleLogout = async () => {
-  try {
-    await supabaseLogout(); // Use the imported logout function
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('axios_id');
-    router.push('/');
-  } catch (error) {
-    console.error('Logout failed:', error);
-  }
-};
-
-const fetchUsername = async () => {
-  try {
-    const userId = localStorage.getItem('user_id');
-    if (!userId) {
-      throw new Error('No user ID found in local storage');
-    }
-
-    const { data, error } = await supabase
-      .from('User')
-      .select('username')
-      .eq('id', userId)
-      .single();
-
-    if (error) {
-      throw error;
-    }
-
-    username.value = data.username || 'Guest';
-  } catch (error) {
-    console.error('Error fetching username:', error);
-    username.value = 'Guest'; // Default value in case of an error
-  }
-};
-
-// Fetch username on component mount
-onMounted(fetchUsername);
-
-const toggleTheme = () => {
-  theme.value = theme.value === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-bs-theme', theme.value);
-  localStorage.setItem('theme', theme.value); // Save theme in local storage
-};
-
-onMounted(() => {
-  document.documentElement.setAttribute('data-bs-theme', theme.value); // Apply saved theme on mount
-});
 </script>
+
 
 <style scoped>
 .logopic {
