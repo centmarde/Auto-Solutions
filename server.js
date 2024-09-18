@@ -34,7 +34,7 @@ const initDb = async () => {
   `);
 
   await db.exec(`
-    CREATE TABLE IF NOT EXISTS CarOwned (
+    CREATE TABLE IF NOT EXISTS Cars (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       brand TEXT,
       model TEXT,
@@ -119,7 +119,7 @@ app.post('/submitForm', async (req, res) => {
 
     // Insert car data
     await db.run(
-      `INSERT INTO CarOwned (brand, model, description, years_owned, user_id) 
+      `INSERT INTO Cars (brand, model, description, years_owned, user_id) 
        VALUES (?, ?, ?, ?, ?)`,
       [brand, model, description, years_owned, user_id]
     );

@@ -143,6 +143,15 @@ export default {
         this.isDataFetched = true; // Set flag to true after data is fetched
       } catch (error) {
         console.error("Error fetching car data:", error);
+        try {
+       
+       const response = await axios.get('/allcars.json');
+       this.cars = response.data; 
+     } catch (fallbackError) {
+       console.error('Error fetching local JSON data:', fallbackError);
+      
+       this.cars = []; // Empty array or default data
+     }
       }
     },
     filterModels() {

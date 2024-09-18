@@ -18,21 +18,24 @@
       <!-- Navbar Links -->
       <div class="collapse navbar-collapse" :class="{ show: isMenuVisible }" id="navbarNav">
         <div class="ms-auto d-flex align-items-center justify-content-end w-100">
-          <router-link to="/UserInfo" class="" @click="closeMenu">
-                <img :src="userImage"  class="img-thumbnail rounded-circle"
-                  style="width: 3rem; height: 3rem;" />
-              </router-link>
+          
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
-            </li>
+           
             <li class="nav-item">
               <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">GARAGE</router-link>
             </li>
             <li class="nav-item">
+              <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/" class="nav-link btn wes" @click="handleLogout">LOGOUT</router-link>
             </li>
+            
           </ul>
+          <router-link to="/UserInfo" @click="closeMenu">
+                <img :src="userImage"  class="rounded-circle"
+                  style="width: 3rem; height: 3rem; object-fit: cover; border: 2px solid white;" />
+              </router-link>
 
           <!-- Theme Toggle -->
           <div class="d-flex align-items-center ms-3">
@@ -224,5 +227,34 @@ onMounted(() => {
 
 header.navbar-light .nav-link {
   color: #333;
+}
+/* Mobile Navigation Links */
+.nav-links-mobile {
+  display: none;
+  background-color: rgba(52, 52, 52, 0.9);
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  flex-direction: column;
+  padding: 10px 20px;
+}
+
+.nav-links-mobile .nav-link {
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Show mobile nav links when menu is visible */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s;
+}
+
+.v-enter,
+.v-leave-to /* .v-leave-active in <2.1.8 */ {
+  opacity: 0;
 }
 </style>
