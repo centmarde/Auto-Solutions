@@ -273,6 +273,7 @@ export default {
             auth_id: user_id,
             address: address,
             password: this.password,
+            isadmin: false
           };
 
           try {
@@ -287,7 +288,7 @@ export default {
             } else {
               const supa_id = data[0]?.id;
               await this.fetchUserData(supa_id, this.email, this.firstname, this.middlename, this.lastname, this.username, this.gender, this.birthdate, address, this.password);
-              alert('Register Successfully, please verify your email. <a href="./login.html">Click Here!</a>');
+              alert('Register Successfully');
               console.log(data);
             }
           } catch (error) {

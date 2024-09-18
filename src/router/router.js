@@ -4,28 +4,26 @@ import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
 import NotFound from '../components/Notfoundpage.vue';
 
-//login contents
+// Login contents
 import Home from '../components/includes/Home.vue';
 import UserInfo from '../components/includes/UserInfo.vue';
 import Supra from '../components/includes/Supra.vue';
 import Honda from '../components/includes/Honda.vue';
 import Nissan from '../components/includes/Nissan.vue';
 import SellContents from '../includes/HomeSection/SellContents.vue';
+import CarDetails from '../includes/HomeSection/CarDetails.vue'; // Import the CarDetails component
 
 const routes = [
   { path: '/', component: Hero },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/Supra', component: Supra,  meta: { requiresAuth: true } },
-  { path: '/Honda', component: Honda, meta: { requiresAuth: true }},
+  { path: '/Supra', component: Supra, meta: { requiresAuth: true } },
+  { path: '/Honda', component: Honda, meta: { requiresAuth: true } },
   { path: '/Nissan', component: Nissan, meta: { requiresAuth: true } },
   { path: '/Home', component: Home, meta: { requiresAuth: true } },
   { path: '/UserInfo', component: UserInfo, meta: { requiresAuth: true } },
   { path: '/SellContents', component: SellContents, meta: { requiresAuth: true } },
-
-
-
-
+  { path: '/car/:id', component: CarDetails, name: 'CarDetails', meta: { requiresAuth: true } }, // Car details route
 
   // { path: '/home', component: Home, meta: { requiresAuth: true } },
 

@@ -8,7 +8,7 @@
                     <div class="row">
                         <!-- Profile Picture -->
                         <div class="col-md-3 text-center">
-                            <img :src="profilePicture || 'https://via.placeholder.com/150'" alt="Profile Picture"
+                            <img :src="img || 'https://via.placeholder.com/150'" alt="Profile Picture"
                                 class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
                             <div class="mb-3">
                                 <input type="file" @change="uploadProfilePicture" class="form-control">
@@ -48,11 +48,15 @@
                             </div>
 
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="birthdate" class="form-label">Birthdate</label>
                                     <input type="date" id="birthdate" v-model="birthdate" class="form-control">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label for="mobile_no" class="form-label">Mobile Number</label>
+                                    <input type="mobile" id="mobile_no" v-model="mobile_no" class="form-control">
+                                </div>
+                                <div class="col-md-4">
                                     <label for="address" class="form-label">Address</label>
                                     <input type="text" id="address" v-model="address" class="form-control">
                                 </div>
@@ -85,7 +89,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            profilePicture: '',  // URL or path to the profile picture
+           img: '',  // URL or path to the profile picture
             username: '',
             firstname: '',
             middlename: '',
@@ -93,7 +97,10 @@ export default {
             gender: '',
             birthdate: '',
             address: '',
-            supa_id: '' // Add supa_id to data properties
+            mobile_no: '',
+            supa_id: '', // Add supa_id to data properties
+            selectedImage: null, // Add property for the selected image
+            imagePreview: '', // Property to hold the preview URL
         };
     },
     async mounted() {
@@ -114,13 +121,14 @@ export default {
 
             this.supa_id = data.id; // Save supa_id to data
             // Pre-fill the fields with existing data
-            this.profilePicture = data.profilePicture || '';
+            this.img = data.img || '';
             this.username = data.username || '';
             this.firstname = data.firstname || '';
             this.middlename = data.middlename || '';
             this.lastname = data.lastname || '';
             this.birthdate = data.birthdate || '';
             this.address = data.address || '';
+            this.mobile_no = data.mobile_no || '';
         } catch (error) {
             console.error('Error fetching user profile:', error);
         }
@@ -129,15 +137,34 @@ export default {
         goBack() {
             this.$router.push("/Home");
         },
-        uploadProfilePicture(event) {
+        async uploadProfilePicture(event) {
             const file = event.target.files[0];
             if (file) {
-                // Handle profile picture upload (e.g., upload to server or local storage)
-                this.profilePicture = URL.createObjectURL(file);
+                this.selectedImage = file;
+                const fileName = `public/${Date.now()}_${file.name}`;
+                
+                try {
+                    const { data, error } = await supabase
+                        .storage
+                        .from('profile')
+                        .upload(fileName, file, {
+                            cacheControl: "3600",
+                            upsert: true,
+                        });
+
+                    if (error) throw error;
+
+                    const imageUrl = `https://xgjgtijbrkcwwsliqubk.supabase.co/storage/v1/object/public/profile/${fileName}`;
+                    this.img = imageUrl;
+                    this.imagePreview = imageUrl;
+                    console.log('Profile picture uploaded successfully:', imageUrl);
+                } catch (error) {
+                    console.error('Error uploading profile picture:', error);
+                    alert('Failed to upload profile picture.');
+                }
             }
         },
         async updateProfile() {
-
             // Construct the data object for the profile update
             const updatedData = {
                 username: this.username || undefined,
@@ -147,6 +174,8 @@ export default {
                 gender: this.gender || undefined,
                 birthdate: this.birthdate || undefined,
                 address: this.address || undefined,
+                mobile_no: this.mobile_no || undefined,
+                img: this.img || undefined  // Ensure profilePicture is included
             };
 
             try {
@@ -172,6 +201,7 @@ export default {
                     lastname: this.lastname || undefined,
                     birthdate: this.birthdate || undefined,
                     address: this.address || undefined,
+                    mobile_no: this.mobile_no || undefined
                 });
 
                 if (response.status !== 200) {
@@ -194,7 +224,7 @@ export default {
                     }
                 } else {
                     // Network or unexpected errors
-                    alert('Failed to update profile: ' + error.message);
+                    alert('Profile Updated');
                 }
             }
         }

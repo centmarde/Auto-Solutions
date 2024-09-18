@@ -18,6 +18,10 @@
       <!-- Navbar Links -->
       <div class="collapse navbar-collapse" :class="{ show: isMenuVisible }" id="navbarNav">
         <div class="ms-auto d-flex align-items-center justify-content-end w-100">
+          <router-link to="/UserInfo" class="" @click="closeMenu">
+                <img :src="userImage"  class="img-thumbnail rounded-circle"
+                  style="width: 3rem; height: 3rem;" />
+              </router-link>
           <ul class="navbar-nav">
             <li class="nav-item">
               <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
@@ -54,6 +58,7 @@
 </template>
 
 
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -62,6 +67,7 @@ import { supabase, doLogout as supabaseLogout } from '../../../lib/supaBase';
 // State
 const isMenuVisible = ref(false);
 const username = ref('');
+const userImage = ref(''); // New state for user image
 const theme = ref(localStorage.getItem('theme') || 'dark'); // Load saved theme or default to dark
 
 // Router
@@ -87,7 +93,7 @@ const handleLogout = async () => {
   }
 };
 
-const fetchUsername = async () => {
+const fetchUserData = async () => {
   try {
     const userId = localStorage.getItem('user_id');
     if (!userId) {
@@ -96,7 +102,7 @@ const fetchUsername = async () => {
 
     const { data, error } = await supabase
       .from('User')
-      .select('username')
+      .select('*')
       .eq('id', userId)
       .single();
 
@@ -105,14 +111,18 @@ const fetchUsername = async () => {
     }
 
     username.value = data.username || 'Guest';
+    userImage.value = data.img || ''; // Set user image URL
+
+    // Debugging: Check the userImage value
+    console.log('Fetched user image:', userImage.value);
   } catch (error) {
-    console.error('Error fetching username:', error);
+    console.error('Error fetching user data:', error);
     username.value = 'Guest'; // Default value in case of an error
   }
 };
 
-// Fetch username on component mount
-onMounted(fetchUsername);
+// Fetch user data on component mount
+onMounted(fetchUserData);
 
 const toggleTheme = () => {
   theme.value = theme.value === 'dark' ? 'light' : 'dark';
@@ -120,45 +130,61 @@ const toggleTheme = () => {
   localStorage.setItem('theme', theme.value); // Save theme in local storage
 };
 
+// Apply saved theme on mount
 onMounted(() => {
-  document.documentElement.setAttribute('data-bs-theme', theme.value); // Apply saved theme on mount
+  document.documentElement.setAttribute('data-bs-theme', theme.value);
 });
 </script>
+
+
+
+
 
 <style scoped>
 .logopic {
   border-radius: 30px;
-  max-width: 100px; /* Ensures logo doesn't grow too large */
+  max-width: 100px;
+  /* Ensures logo doesn't grow too large */
 }
 
 #gidor {
   font-size: 1.2rem;
-  font-family: "Merriweather", serif; 
+  font-family: "Merriweather", serif;
 }
 
-@media (max-width: 992px) { /* Large tablets and small desktops */
+@media (max-width: 992px) {
+
+  /* Large tablets and small desktops */
   #gidor {
     font-size: 1.25rem;
   }
 }
 
-@media (max-width: 768px) { /* Tablets */
+@media (max-width: 768px) {
+
+  /* Tablets */
   .logopic {
-    height: 40px; /* Smaller logo for smaller screens */
+    height: 40px;
+    /* Smaller logo for smaller screens */
   }
 
   #gidor {
-    font-size: 1rem; /* Smaller title for smaller screens */
+    font-size: 1rem;
+    /* Smaller title for smaller screens */
   }
 }
 
-@media (max-width: 280px) { /* Mobile devices */
+@media (max-width: 280px) {
+
+  /* Mobile devices */
   .logopic {
-    height: 30px; /* Even smaller logo for mobile */
+    height: 30px;
+    /* Even smaller logo for mobile */
   }
 
   #gidor {
-    font-size: 0.6rem; /* Adjust title size for mobile */
+    font-size: 0.6rem;
+    /* Adjust title size for mobile */
   }
 }
 

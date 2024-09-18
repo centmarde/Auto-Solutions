@@ -39,6 +39,20 @@
                         </ul>
                     </div>
 
+                    <!-- Price -->
+                    <div class="col-md-6 mb-3">
+                        <label for="carPrice" class="form-label">Price (PHP)</label>
+                        <input type="number" class="form-control" id="carPrice" v-model="car.price"
+                            placeholder="Enter price in PHP" required />
+                    </div>
+                    <!-- Description -->
+                    <div class="col-12 mb-3">
+                        <label for="carDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="carDescription" v-model="car.description" rows="4"
+                            placeholder="Describe your car" required></textarea>
+                    </div>
+
+                    <h5 class="text-center mb-4">Addtional Contents (Optional)</h5>
 
                     <!-- Year of Manufacture -->
                     <div class="col-md-6 mb-3">
@@ -88,31 +102,12 @@
                             placeholder="Enter mileage" required />
                     </div>
 
-                    <!-- Price -->
-                    <div class="col-md-6 mb-3">
-                        <label for="carPrice" class="form-label">Price (PHP)</label>
-                        <input type="number" class="form-control" id="carPrice" v-model="car.price"
-                            placeholder="Enter price in PHP" required />
-                    </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="contactPhone" class="form-label">Years Owned</label>
                         <input type="tel" class="form-control" id="contactPhone" v-model="car.yearsowned"
                             placeholder="Years Owned" required />
                     </div>
-
-                    <!-- Description -->
-                    <div class="col-12 mb-3">
-                        <label for="carDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="carDescription" v-model="car.description" rows="4"
-                            placeholder="Describe your car" required></textarea>
-                    </div>
-
-
-
-
-
-
-
                     <div class="col-md-6 bm-3 text-center mx-auto d-flex justify-content-center">
                         <router-link to="/Home" class="tr" exact>
                             <button type="button" class="lofi" style="width: 30rem;">
