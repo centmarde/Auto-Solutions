@@ -127,8 +127,15 @@
                     </div>
 
                     <div class="col-md-6 bm-3 text-center mx-auto d-flex justify-content-center">
-                        <button type="button" @click="submitCarDetails" class="lofi" style="width: 30rem;">
-                            <span>Submit</span>
+                        <button type="button" @click="submitCarDetails" :class="['lofi', { 'disabled': loading }]"
+                            style="width: 30rem;" :disabled="loading">
+                            <span v-if="loading">
+                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                <span>Loading...</span>
+                            </span>
+                            <span v-else>
+                                Submit
+                            </span>
                             <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
                                 <path fill-rule="evenodd"
                                     d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
@@ -146,7 +153,7 @@
 
 <script>
 import axios from 'axios';
-import { supabase } from '../../lib/supaBase'; 
+import { supabase } from '../../lib/supaBase';
 
 export default {
     data() {
@@ -170,9 +177,99 @@ export default {
             suggestedBrands: [],
             suggestedModels: [],
             imagePreview: null,
+            selectedImage: null,
+            loading: false,
         };
     },
     methods: {
+        async submitCarDetails() {
+            if (!this.car.model || !this.car.brand || !this.car.price) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            this.loading = true;
+            const userId = localStorage.getItem('user_id');
+
+            const carDetails = {
+                brand: this.car.brand,
+                model: this.car.model,
+                year: this.car.year,
+                mileage: this.car.mileage,
+                price: this.car.price,
+                description: this.car.description,
+                engine: this.car.engine,
+                horsepower: this.car.horsepower,
+                torque: this.car.torque,
+                topSpeed: this.car.topSpeed,
+                transmission: this.car.transmission,
+                yearsowned: this.car.yearsowned,
+                forSale: true,
+                forRent: false,
+                user_id: userId,
+            };
+
+            try {
+
+                const { data: insertData, error: insertError } = await supabase
+                    .from('Car')
+                    .insert([carDetails])
+                    .select();
+
+                if (insertError) throw insertError;
+
+                console.log('Car Details Submitted:', insertData);
+
+
+                if (this.selectedImage) {
+                    const imageUrl = await this.imageUpload();
+
+
+                    await supabase
+                        .from('Car')
+                        .update({ img: imageUrl })
+                        .match({ id: insertData[0].id });
+                }
+
+                alert('Car details submitted successfully!');
+            } catch (error) {
+                console.error('Error submitting car details:', error);
+                alert('Failed to submit car details.');
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async imageUpload() {
+            if (!this.selectedImage) {
+                console.log('No image selected for upload.');
+                return;
+            }
+
+            const fileName = `public/${Date.now()}_${this.selectedImage.name}`;
+            try {
+
+                const { data, error } = await supabase
+                    .storage
+                    .from('cars')
+                    .upload(fileName, this.selectedImage, {
+                        cacheControl: "3600",
+                        upsert: true,
+                    });
+
+                if (error) throw error;
+
+                const imageUrl = `https://xgjgtijbrkcwwsliqubk.supabase.co/storage/v1/object/public/cars/${fileName}`;
+                console.log('Image uploaded successfully:', imageUrl);
+
+                // Return the image URL for further use
+                return imageUrl;
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image.');
+            }
+        },
+
         async fetchCarData() {
             try {
                 const response1 = await axios.get("https://raw.githubusercontent.com/centmarde/api/main/allcars.json");
@@ -214,55 +311,14 @@ export default {
         onImageChange(event) {
             const file = event.target.files[0];
             if (file) {
+                this.selectedImage = file;
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     this.imagePreview = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
-        },
-        async submitCarDetails() {
-            if (!this.car.model || !this.car.brand || !this.car.price) {
-                alert('Please fill in all required fields!');
-                return;
-            }
-
-            const userId = localStorage.getItem('user_id');
-
-
-            const carDetails = {
-                brand: this.car.brand,
-                model: this.car.model,
-                year: this.car.year,
-                mileage: this.car.mileage,
-                price: this.car.price,
-                description: this.car.description,
-                engine: this.car.engine,
-                horsepower: this.car.horsepower,
-                torque: this.car.torque,
-                topSpeed: this.car.topSpeed,
-                transmission: this.car.transmission,
-                yearsowned: this.car.yearsowned,
-                forSale: true, // for sale para mo gawas didtua sa atoang UI puhon
-                forRent: false,
-                user_id: userId
-
-            };
-
-            try {
-                const { data, error } = await supabase
-                    .from('Car')
-                    .insert([carDetails]);
-
-                if (error) throw error;
-
-                console.log('Car Details Submitted:', data);
-                alert('Car details submitted successfully!');
-            } catch (error) {
-                console.error('Error submitting car details:', error);
-                alert('Failed to submit car details.');
-            }
-        },
+        }
     },
     mounted() {
         this.fetchCarData();
