@@ -18,7 +18,7 @@
                 ></div>
                 <span>Loading...</span>
               </span>
-              <span v-else><router-link to="/Register" class="nav-link">Get-Started</router-link></span>
+              <span v-else><router-link to="/login" class="nav-link">Get-Started</router-link></span>
               <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
                 <path
                   fill-rule="evenodd"

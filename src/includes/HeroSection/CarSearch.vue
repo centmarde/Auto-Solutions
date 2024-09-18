@@ -136,7 +136,7 @@ export default {
     async fetchCarData() {
       try {
         const response = await axios.get(
-          "https://centmarde.github.io/api/allcars.json"
+          "https://centmarde.github.io/carsMockdata/allcars.json"
         );
         this.cars = response.data;
         this.uniqueMakes = [...new Set(this.cars.map((car) => car.Brand))];

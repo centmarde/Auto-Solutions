@@ -39,15 +39,15 @@
                 <div class="row">
                     <div class="col">
                         <button class="custom-button ms-1 mt-3" @click="BodyButton">
-                            <router-link to="/Home" class="nav-link" @click="closeMenu">HOME</router-link>
+                            <router-link to="/Home" class="nav-link" >HOME</router-link>
                         </button>
                         <button class="custom-drpdown ms-1 mt-3 dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             MENU
                         </button>
                         <ul class="dropdown-menu">
-                            <li><router-link to="/Home" class="dropdown-item" @click="closeMenu">HOME</router-link></li>
-                            <li><router-link to="/Home" class="dropdown-item" @click="closeMenu">Menu2</router-link>
+                            <li><router-link to="/Supra" class="dropdown-item" >2024 Toyota GR Supra</router-link></li>
+                            <li><router-link to="/Nissan" class="dropdown-item" >2024 Nissan Z Performance</router-link>
                             </li>
                         </ul>
 
@@ -210,7 +210,7 @@ export default {
         const carModel = modelViewer.model;
         const material = carModel?.materials?.[7]; // Ensure materials exist
         if (material) {
-            material.pbrMetallicRoughness.setBaseColorFactor([0.51, 0.65, 0.48]); // Set the color to #c43a30
+            material.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1]); // Set the color to #c43a30
         }
     });
 }
@@ -242,7 +242,7 @@ export default {
     bottom: 0;
     width: 100%;
     height: 100vh;
-    background: radial-gradient(circle, #ffffff, #82a57b);
+    background: radial-gradient(circle, #ffffff, #151515);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 0;
     padding: 0;
