@@ -1,27 +1,178 @@
 <template>
-  <div>
-    <div class="container">
+  <section>
+    <div id="xrt23" class="card-body">
       <div class="row">
-        <div class="col"><h1>this is Car Rental</h1></div>
-        <button
-          type="button"
-          id="Goback_button"
-          class="btn btn-primary ms-5"
-          @click="GoBack"
-        >
-         Home
+        <div class="col-12 col-lg-7 col-md-6 col-sm-5">
+          <h3 id="title">RENT A CAR</h3>
+          <div class="d-flex">
+            <img class="erd3 me-2" src="https://example.com/rent-car-choose.png" alt="Choose Your Car" />
+            <span>
+              Explore a wide range of vehicles and choose the one that fits your needs.
+            </span>
+          </div>
+
+          <hr />
+          <div class="d-flex">
+            <img class="erd3 me-2" src="https://example.com/rent-car-book.png" alt="Book Your Car" />
+            <span>
+              Reserve your car easily online. Enjoy a hassle-free booking experience with instant confirmation.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-5 col-md-6 col-sm-5">
+          <div id="sts4" style="top: 20%; right: 10%; position: relative;">
+            <img src="https://cdn-icons-png.flaticon.com/512/8566/8566110.png" style="width: 10rem;" alt="Rent a Car" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center my-2">
+        <!-- Submit Button -->
+        <button type="submit" class="btnn32" @click="handleSubmit">
+          Get Started
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+              clip-rule="evenodd"></path>
+          </svg>
         </button>
       </div>
     </div>
-  </div>
+  </section>
 </template>
+
+
 
 <script>
 export default {
+  data() {
+    return {
+      isSubmitting: false,
+    };
+  },
   methods: {
-    GoBack() {
-      this.$router.push("/Home");
+    handleSubmit() {
+      // Check if user is logged in
+      const isLoggedIn = localStorage.getItem("access_token") !== null;
+
+      if (isLoggedIn) {
+        // If logged in, redirect to sell contents page (e.g., Home)
+        this.$router.push("/SellContents");
+      } else {
+        // If not logged in, redirect to Register page
+        this.$router.push("/login");
+      }
     },
   },
+
+
+
 };
 </script>
+
+<style scoped>
+#xrt23 {
+  overflow: hidden;
+}
+
+#title {
+  font-family: "Merriweather", serif;
+}
+
+@media (max-width: 800px) and (min-width: 350px) {
+  #sts4 {
+    top: 50%;
+    left: 20%;
+    margin-bottom: 2rem;
+  }
+}
+
+.erd3 {
+  width: 4.5rem;
+}
+
+@media (max-width: 999px) and (min-width: 350px) {
+  .erd3 {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (max-width: 1400px) and (min-width: 999px) {
+  .erd3 {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+.btnn32 {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  padding-block: 0.5rem;
+  padding-inline: 1.25rem;
+  background-color: rgb(97, 40, 255);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffff;
+  gap: 10px;
+  font-weight: bold;
+  border: 3px solid #ffffff4d;
+  outline: none;
+  overflow: hidden;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btnn32hover {
+  transform: scale(1.05);
+  border-color: #fff9;
+}
+
+.btnn32:hover .icon {
+  transform: translate(4px);
+}
+
+.btnn32:hover::before {
+  animation: shine 1.5s ease-out infinite;
+}
+
+.btnn32::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background-image: linear-gradient(120deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0) 70%);
+  top: 0;
+  left: -100px;
+  opacity: 0.6;
+}
+
+@keyframes shine {
+  0% {
+    left: -100px;
+  }
+
+  60% {
+    left: 100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+</style>
