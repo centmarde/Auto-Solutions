@@ -267,7 +267,7 @@ export default {
 
         async fetchCarData() {
             try {
-                const response1 = await axios.get("https://raw.githubusercontent.com/centmarde/api/main/allcars.json");
+                const response1 = await axios.get("https://raw.githubusercontent.com/centmarde/carsMockdata/main/allcars.json");
                 this.carData = response1.data;
 
                 const response2 = await axios.get("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json");
