@@ -17,8 +17,12 @@
                   <li v-if="user.mobile_no" class="car-detail-item">
                     <strong>Contact:</strong> {{ user.mobile_no }}
                   </li>
+                  <li v-if="user.mobile_no" class="car-detail-item">
+                    <strong>Location:</strong> {{ user.address }}
+                  </li>
                  
                 </ul>
+                <hr>
                 <div v-if="user.username" class="car-detail-item d-flex justify-content-end">
                 <div class="my-2 mx-2">  {{ user.username }} </div>
                     <img :src="user.img" alt="User Image" class="user-img"/>
@@ -77,14 +81,15 @@ export default {
       return {
         Year: this.car.year,
         Price: `php${this.car.price}`,
-        Description: this.car.description,
+       
         Mileage: this.car.mileage,
         Engine: this.car.engine,
         Horsepower: `${this.car.horsepower} HP`,
         Torque: `${this.car.torque} Nm`,
         TopSpeed: `${this.car.topSpeed} km/h`,
         Transmission: this.car.transmission,
-        YearsOwned: this.car.yearsowned
+        YearsOwned: this.car.yearsowned,
+        Description: this.car.description
       };
     }
   },
@@ -105,7 +110,7 @@ export default {
       try {
         const { data, error } = await supabase
           .from('Car')
-          .select('*, User(username, mobile_no, img)')
+          .select('*, User(*)')
           .eq('id', id)
           .single();
 
