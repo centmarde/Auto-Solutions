@@ -6,8 +6,8 @@
         <div class="col"> <CarsForSale/></div>
       </div>
     </div>
-   
     <div class="container">
+      <hr> <br><br>
       <div class="row">
         <div class="col-12 col-lg-6 col-md-6 col-sm-12"><div class="card shadow-lg">
           <div class="card-body"><SellCar/></div>
