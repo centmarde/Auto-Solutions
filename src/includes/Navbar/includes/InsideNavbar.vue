@@ -25,8 +25,12 @@
               <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">GARAGE</router-link>
             </li>
             <li class="nav-item">
+              <router-link to="/Inquires" class="nav-link btn wes" @click="closeMenu">INQUIRES</router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
             </li>
+           
             <li class="nav-item">
               <router-link to="/" class="nav-link btn wes" @click="handleLogout">LOGOUT</router-link>
             </li>
@@ -51,12 +55,7 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Links -->
-    <div class="nav-links-mobile" v-show="isMenuVisible">
-      <router-link to="/UserInfo" class="nav-link btn wes" @click="closeMenu">{{ username }}</router-link>
-      <router-link to="/Supra" class="nav-link btn wes" @click="closeMenu">SERVICES</router-link>
-      <router-link to="/" class="nav-link btn wes" @click="handleLogout">LOGOUT</router-link>
-    </div>
+   
   </header>
 </template>
 

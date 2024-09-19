@@ -121,6 +121,7 @@ const login = async () => {
     localStorage.setItem("access_token", session.access_token);
     localStorage.setItem("refresh_token", session.refresh_token);
     localStorage.setItem("auth_id", user?.id);
+   
 
     // Fetch user profiles
     let { data: profiles, error } = await supabase
@@ -130,6 +131,8 @@ const login = async () => {
 
     if (profiles && profiles.length > 0) {
       localStorage.setItem("user_id", profiles[0].id);
+      localStorage.setItem("Role", profiles[0].isadmin ? 'true' : 'false');
+      console.log(profiles[0].isadmin);
       console.log(profiles[0].id);
 
       // Redirect to home page after successful login

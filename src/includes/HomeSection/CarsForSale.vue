@@ -53,14 +53,19 @@ export default {
   methods: {
     async fetchCars() {
       this.loading = true;
+      const loggedInUserId = localStorage.getItem("user_id"); // Get the logged-in user's ID
+
       try {
         const { data, error } = await supabase
           .from('Car')
           .select(`
             *,
-            User(*)  // Join with User table to fetch user name
+            User (
+             *
+            )
           `)
-          .eq('forSale', true);  // Fetch only cars for sale
+          .eq('forSale', true) // Fetch only cars for sale
+          .neq('user_id', loggedInUserId); // Ensure the user_id does not match the logged-in user's ID
 
         if (error) throw error;
 
@@ -74,6 +79,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .koy{
