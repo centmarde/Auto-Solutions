@@ -11,7 +11,9 @@ import Supra from '../components/includes/Supra.vue';
 import Honda from '../components/includes/Honda.vue';
 import Nissan from '../components/includes/Nissan.vue';
 import SellContents from '../includes/HomeSection/SellContents.vue';
-import CarDetails from '../includes/HomeSection/CarDetails.vue'; // Import the CarDetails component
+import CarDetails from '../includes/HomeSection/CarDetails.vue';
+import Dashboard from '../components/includes/Dashboard.vue';
+import Inquires from '../components/includes/Inquires.vue'
 
 const routes = [
   { path: '/', component: Hero },
@@ -24,14 +26,8 @@ const routes = [
   { path: '/UserInfo', component: UserInfo, meta: { requiresAuth: true } },
   { path: '/SellContents', component: SellContents, meta: { requiresAuth: true } },
   { path: '/car/:id', component: CarDetails, name: 'CarDetails', meta: { requiresAuth: true } }, // Car details route
-
-  // { path: '/home', component: Home, meta: { requiresAuth: true } },
-
-  /* { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/userProfile', component: UserProfile, meta: { requiresAuth: true } },
-  { path: '/help', component: Help, meta: { requiresAuth: true } },
-  { path: '/accept', component: Accept, meta: { requiresAuth: true } },
-  { path: '/sets', component: Sets, meta: { requiresAuth: true } }, */
+  { path: '/Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+  { path: '/Inquires', component: Inquires, meta: { requiresAuth: true } },
   { path: '/:pathMatch(.*)*', component: NotFound } // Optional for handling unknown routes
 ];
 
@@ -42,17 +38,26 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem("access_token") !== null;
-  const userRole = localStorage.getItem("Role");
+  const userRole = JSON.parse(localStorage.getItem("Role")); // Parse the boolean stored as a string
+  const hasVisitedDashboard = JSON.parse(localStorage.getItem("hasVisitedDashboard")) || false; // Track dashboard visit
+  
+  console.log('User Role:', userRole); // Debugging role
 
   // Pages that don't require authentication
   const publicPages = ['/', '/login', '/register'];
 
   // Pages that require authentication
-  const protectedPages = ['/UserLanding', '/Home', '/UserInfo', '/Supra', '/Honda', '/Nissan', '/SellContents'];
+  const protectedPages = ['/UserLanding', '/Home', '/UserInfo', '/Supra', '/Honda', '/Nissan', '/SellContents', '/Dashboard', '/car/:id', 'Inquires'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
     return next('/');
+  }
+
+  // Redirect admin to the dashboard on first login if they haven't visited it yet
+  if (isLoggedIn && userRole === true && !hasVisitedDashboard) {
+    localStorage.setItem("hasVisitedDashboard", true); // Set flag to true after visiting dashboard
+    return next('/Dashboard');
   }
 
   // Redirect to home if already logged in and trying to access public pages
@@ -60,13 +65,16 @@ router.beforeEach((to, from, next) => {
     return next('/Home');
   }
 
-  // Example for role-based access (uncomment if needed)
-  /* if (to.path.startsWith('/dashboard') && (userRole !== 'Owner' && userRole !== 'Admin')) {
-    return next('/home');
-  } */
+  // Restrict non-admin users from accessing the dashboard
+  if (to.path.startsWith('/Dashboard') && userRole !== true) {
+    alert('You do not have permission to access this page.');
+    return next('/Home');
+  }
 
-  // Default behavior: proceed to the route
+  // Default behavior: proceed to the requested route
   next();
 });
+
+
 
 export default router;

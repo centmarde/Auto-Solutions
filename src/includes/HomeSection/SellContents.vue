@@ -7,8 +7,8 @@
                     <!-- Car Image Input -->
                     <div class="col-md-6 mb-3">
                         <label for="carImage" class="form-label">Car Image</label>
-                        <input type="file" class="form-control" id="carImage" @change="onImageChange" required />
-                        <img v-if="imagePreview" :src="imagePreview" class="img-fluid mt-3" alt="Car Image Preview" />
+                        <input type="file" class="form-control" id="carImage" @change="onImageChange" required  multiple/>
+                        <img v-if="imagePreview" :src="imagePreview" class="img-fluid mt-3" alt="Car Image Preview"  style="width: 5rem;"/>
                     </div>
 
                     <!-- Car Brand with Suggestions -->
