@@ -21,6 +21,8 @@
     
     <br><br><br>
     <FeaturedCar/>
+    <br><br>
+    <Footer/>
     
   </template>
   
@@ -32,6 +34,7 @@
   import HeroHome from "../../includes/HomeSection/HeroHome.vue";
   import CarsForSale from "../../includes/HomeSection/CarsForSale.vue";
   import CarRental from "../../includes/HomeSection/CarRental.vue";
+  import Footer from '../../includes/HeroSection/Footer.vue';
 
   
   

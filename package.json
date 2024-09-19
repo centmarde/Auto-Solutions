@@ -26,6 +26,7 @@
     "cors": "^2.8.5",
     "dat.gui": "^0.7.9",
     "express": "^4.19.2",
+    "groq-sdk": "^0.7.0",
     "gsap": "^3.12.5",
     "jsonwebtoken": "^9.0.2",
     "lottie-web": "^5.12.2",

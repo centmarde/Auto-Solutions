@@ -7,8 +7,10 @@
                     <!-- Car Image Input -->
                     <div class="col-md-6 mb-3">
                         <label for="carImage" class="form-label">Car Image</label>
-                        <input type="file" class="form-control" id="carImage" @change="onImageChange" required  multiple/>
-                        <img v-if="imagePreview" :src="imagePreview" class="img-fluid mt-3" alt="Car Image Preview"  style="width: 5rem;"/>
+                        <input type="file" class="form-control" id="carImage" @change="onImageChange" required
+                            />
+                        <img v-if="imagePreview" :src="imagePreview" class="img-fluid mt-3" alt="Car Image Preview"
+                            style="width: 5rem;" />
                     </div>
 
                     <!-- Car Brand with Suggestions -->
@@ -42,14 +44,14 @@
                     <!-- Price -->
                     <div class="col-md-6 mb-3">
                         <label for="carPrice" class="form-label">Price (PHP)</label>
-                        <input type="number" class="form-control" id="carPrice" v-model="car.price"
-                            placeholder="Enter price in PHP" required />
+                        <input type="text" class="form-control" id="carPrice" v-model="car.price"
+                            placeholder="Enter price in PHP"  />
                     </div>
                     <!-- Description -->
                     <div class="col-12 mb-3">
                         <label for="carDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="carDescription" v-model="car.description" rows="4"
-                            placeholder="Describe your car" required></textarea>
+                            placeholder="Describe your car" ></textarea>
                     </div>
 
                     <h5 class="text-center mb-4">Addtional Contents (Optional)</h5>
@@ -57,27 +59,27 @@
                     <!-- Year of Manufacture -->
                     <div class="col-md-6 mb-3">
                         <label for="carYear" class="form-label">Year of Manufacture</label>
-                        <input type="number" class="form-control" id="carYear" v-model="car.year"
-                            placeholder="Enter year (e.g. 2021)" required />
+                        <input type="text" class="form-control" id="carYear" v-model="car.year"
+                            placeholder="Enter year (e.g. 2021)"  />
                     </div>
 
                     <!-- Car Specifications -->
                     <div class="col-md-6 mb-3">
                         <label for="carEngine" class="form-label">Engine</label>
                         <input type="text" class="form-control" id="carEngine" v-model="car.engine"
-                            placeholder="Enter engine specifications" required />
+                            placeholder="Enter engine specifications"  />
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="carHorsepower" class="form-label">Horsepower</label>
                         <input type="text" class="form-control" id="carHorsepower" v-model="car.horsepower"
-                            placeholder="Enter horsepower" required />
+                            placeholder="Enter horsepower"  />
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="carTorque" class="form-label">Torque</label>
                         <input type="text" class="form-control" id="carTorque" v-model="car.torque"
-                            placeholder="Enter torque" required />
+                            placeholder="Enter torque"  />
                     </div>
 
 
@@ -85,21 +87,21 @@
                     <div class="col-md-6 mb-3">
                         <label for="carTopSpeed" class="form-label">Top Speed</label>
                         <input type="text" class="form-control" id="carTopSpeed" v-model="car.topSpeed"
-                            placeholder="Enter top speed" required />
+                            placeholder="Enter top speed"  />
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="carTransmission" class="form-label">Transmission</label>
                         <input type="text" class="form-control" id="carTransmission" v-model="car.transmission"
-                            placeholder="Enter transmission type" required />
+                            placeholder="Enter transmission type" />
                     </div>
 
 
                     <!-- Mileage -->
                     <div class="col-md-6 mb-3">
                         <label for="carMileage" class="form-label">Mileage (in KM)</label>
-                        <input type="number" class="form-control" id="carMileage" v-model="car.mileage"
-                            placeholder="Enter mileage" required />
+                        <input type="text" class="form-control" id="carMileage" v-model="car.mileage"
+                            placeholder="Enter mileage" />
                     </div>
 
 
@@ -149,6 +151,7 @@
 <script>
 import axios from 'axios';
 import { supabase } from '../../lib/supaBase';
+import { getChatCompletion } from '../../api/generate-car-details';
 
 export default {
     data() {
@@ -178,11 +181,68 @@ export default {
     },
     methods: {
         async submitCarDetails() {
+            // Check if required fields are filled
             if (!this.car.model || !this.car.brand || !this.car.price) {
                 alert('Please fill in all required fields!');
                 return;
             }
 
+            // Check if any additional fields are missing
+            const fieldsToFill = [];
+            if (!this.car.year) fieldsToFill.push('YearModel');
+            if (!this.car.engine) fieldsToFill.push('Engine');
+            if (!this.car.horsepower) fieldsToFill.push('Horsepower');
+            if (!this.car.torque) fieldsToFill.push('Torque');
+            if (!this.car.topSpeed) fieldsToFill.push('Top Speed');
+            if (!this.car.transmission) fieldsToFill.push('Transmission');
+            if (!this.car.mileage) fieldsToFill.push('Mileage');
+            if (!this.car.description) fieldsToFill.push('Description');
+
+            // If there are missing fields, get suggestions from AI
+            if (fieldsToFill.length > 0) {
+                try {
+                    const aiResponse = await getChatCompletion(this.car.brand, this.car.model, fieldsToFill);
+                    const lines = aiResponse.split('\n').map(line => line.trim()).filter(line => line);
+
+                    // Parse AI response into car data
+                    lines.forEach(line => {
+                        const [key, value] = line.split(':').map(part => part.trim());
+                        switch (key) {
+                            case 'Mileage':
+                                this.car.mileage = value;
+                                break;
+                            case 'Engine':
+                                this.car.engine = value;
+                                break;
+                            case 'Description':
+                                this.car.description = value;
+                                break;
+                            case 'Horsepower':
+                                this.car.horsepower = value;
+                                break;
+                            case 'Torque':
+                                this.car.torque = value;
+                                break;
+                            case 'TopSpeed':
+                                this.car.topSpeed = value;
+                                break;
+                            case 'YearModel':
+                                this.car.year = value;
+                                break;
+                            case 'Transmission':
+                                this.car.transmission = value;
+                                break;
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching AI suggestions:', error);
+                    alert('Failed to get AI suggestions.');
+                    this.loading = false;
+                    return;
+                }
+            }
+
+            // Proceed with form submission
             this.loading = true;
             const userId = localStorage.getItem('user_id');
 
@@ -205,7 +265,6 @@ export default {
             };
 
             try {
-
                 const { data: insertData, error: insertError } = await supabase
                     .from('Car')
                     .insert([carDetails])
@@ -215,10 +274,8 @@ export default {
 
                 console.log('Car Details Submitted:', insertData);
 
-
                 if (this.selectedImage) {
                     const imageUrl = await this.imageUpload();
-
 
                     await supabase
                         .from('Car')
@@ -243,7 +300,6 @@ export default {
 
             const fileName = `public/${Date.now()}_${this.selectedImage.name}`;
             try {
-
                 const { data, error } = await supabase
                     .storage
                     .from('cars')

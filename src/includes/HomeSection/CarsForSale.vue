@@ -65,8 +65,7 @@ export default {
             )
           `)
           .eq('forSale', true) // Fetch only cars for sale
-          .neq('user_id', loggedInUserId); // Ensure the user_id does not match the logged-in user's ID
-
+          /* .neq('user_id', loggedInUserId);  */
         if (error) throw error;
 
         this.cars = data;

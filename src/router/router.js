@@ -14,6 +14,7 @@ import SellContents from '../includes/HomeSection/SellContents.vue';
 import CarDetails from '../includes/HomeSection/CarDetails.vue';
 import Dashboard from '../components/includes/Dashboard.vue';
 import Inquires from '../components/includes/Inquires.vue'
+import Test from '.././includes/HomeSection/Test.vue'
 
 const routes = [
   { path: '/', component: Hero },
@@ -28,6 +29,7 @@ const routes = [
   { path: '/car/:id', component: CarDetails, name: 'CarDetails', meta: { requiresAuth: true } }, // Car details route
   { path: '/Dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/Inquires', component: Inquires, meta: { requiresAuth: true } },
+  { path: '/Test', component: Test, meta: { requiresAuth: true } },
   { path: '/:pathMatch(.*)*', component: NotFound } // Optional for handling unknown routes
 ];
 
@@ -47,7 +49,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/', '/login', '/register'];
 
   // Pages that require authentication
-  const protectedPages = ['/UserLanding', '/Home', '/UserInfo', '/Supra', '/Honda', '/Nissan', '/SellContents', '/Dashboard', '/car/:id', 'Inquires'];
+  const protectedPages = ['/UserLanding', '/Home', '/UserInfo', '/Supra', '/Honda', '/Nissan', '/SellContents', '/Dashboard', '/car/:id', 'Inquires', '/Test'];
 
   // Redirect to login if trying to access protected pages without being logged in
   if (protectedPages.includes(to.path) && !isLoggedIn) {
